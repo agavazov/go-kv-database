@@ -15,8 +15,9 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# Dependency directories
+# Vendors
 vendor/
+node_modules/
 
 # Misc
-_draft/
+.draft/

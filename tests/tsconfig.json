@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    // Compiling JS version
+    "target": "ES6",
+    "module": "commonjs",
+    "lib": [
+      "DOM",
+      "ES2020"
+    ],
+    // Strict
+    "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    // Case-sensitive file names
+    "forceConsistentCasingInFileNames": true,
+    // Output compiling directory
+    "outDir": "./dist",
+    // Code directory
+    "rootDir": "./src",
+    // Use better way to include libraries after compiling
+    "esModuleInterop": true,
+    // Append source map after compiling
+    "sourceMap": true,
+    // Remove code comments after compiling
+    "removeComments": false,
+    // Location of the paths param,
+    "baseUrl": "./",
+    // Library aliases (use `tsconfig-paths` to load them)
+    "paths": {}
+  }
+}
