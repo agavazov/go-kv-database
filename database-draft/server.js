@@ -5,6 +5,9 @@ const url = require('url');
 /* Draft code with duplicated snippets and many non-good practices */
 /*******************************************************************/
 
+// Load env
+require('dotenv').config();
+
 // Quick function for the HTTP response
 const quickResponse = (res, code, data) => {
   res.writeHead(code, {'Content-Type': 'text/json'});
@@ -17,11 +20,12 @@ let db = {};
 // Settings
 const maxKeyLength = 64;
 const maxValueLength = 256;
-const nodeId = 'DB_1';
+const nodeId = `DB_${process.env.HOSTNAME}`;
 
 // All in once
 const server = http.createServer((req, res) => {
   const urlParse = url.parse(req.url, true);
+  // console.log('urlParse.path', urlParse.path);
 
   switch (urlParse.pathname) {
     case '/set': {
@@ -193,6 +197,8 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(22122, '127.0.0.1', () => {
-  console.log('Server is running on http://127.0.0.1:22122');
+// Start the server
+const servicePort = process.env.SERVICE_PORT || 80;
+server.listen(servicePort, '0.0.0.0', () => {
+  console.log(`Server is running on http://localhost:${servicePort} [NodeId: ${nodeId}]`);
 });

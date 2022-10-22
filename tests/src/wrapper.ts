@@ -10,3 +10,5 @@ import('./spec/clear.spec');
 import('./spec/get-keys.spec');
 import('./spec/get-values.spec');
 import('./spec/get-all.spec');
+
+// import('./spec/stress.spec');

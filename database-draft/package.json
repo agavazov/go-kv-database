@@ -1,10 +1,13 @@
 {
-  "name": "node-db-draft",
+  "name": "database-draft",
   "version": "0.0.1",
   "author": "Alexander Gavazov",
   "private": true,
   "license": "MIT",
   "scripts": {
     "start": "node server.js"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3"
   }
 }
