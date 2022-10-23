@@ -80,7 +80,7 @@ describe('/get command', () => {
       }
 
       // Check errors
-      expect(error?.response?.status).to.be.equal(500);
+      expect(error?.response?.status).to.be.equal(400);
       expect(error).to.be.an('object');
       expect(error?.response?.data?.error).to.be.equal('MISSING_KEY_PARAM');
 
@@ -99,7 +99,7 @@ describe('/get command', () => {
       }
 
       // Check errors
-      expect(error?.response?.status).to.be.equal(500);
+      expect(error?.response?.status).to.be.equal(400);
       expect(error).to.be.an('object');
       expect(error?.response?.data?.error).to.be.equal('EMPTY_KEY');
 
@@ -118,7 +118,7 @@ describe('/get command', () => {
       }
 
       // Check errors
-      expect(error?.response?.status).to.be.equal(500);
+      expect(error?.response?.status).to.be.equal(400);
       expect(error).to.be.an('object');
       expect(error?.response?.data?.error).to.be.equal('MAXIMUM_KEY_LENGTH_REACHED');
 

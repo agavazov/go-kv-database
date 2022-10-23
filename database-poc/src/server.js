@@ -251,35 +251,35 @@ class Server {
         // Checks - skip them if request is from another node
         if (!params.nodeId) {
           if (typeof params?.k === 'undefined') {
-            this.quickResponse(serverRes, 500, {
+            this.quickResponse(serverRes, 400, {
               error: 'MISSING_KEY_PARAM'
             });
             break;
           }
 
           if (params?.k?.length <= 0) {
-            this.quickResponse(serverRes, 500, {
+            this.quickResponse(serverRes, 400, {
               error: 'EMPTY_KEY'
             });
             break;
           }
 
           if (params?.k?.length >= this.maxKeyLength) {
-            this.quickResponse(serverRes, 500, {
+            this.quickResponse(serverRes, 400, {
               error: 'MAXIMUM_KEY_LENGTH_REACHED'
             });
             break;
           }
 
           if (typeof params?.v === 'undefined') {
-            this.quickResponse(serverRes, 500, {
+            this.quickResponse(serverRes, 400, {
               error: 'MISSING_VALUE_PARAM'
             });
             break;
           }
 
           if (params?.v?.length >= this.maxValueLength) {
-            this.quickResponse(serverRes, 500, {
+            this.quickResponse(serverRes, 400, {
               error: 'MAXIMUM_VALUE_LENGTH_REACHED'
             });
             break;
@@ -303,21 +303,21 @@ class Server {
         // Checks - skip them if request is from another node
         if (!params.nodeId) {
           if (typeof params?.k === 'undefined') {
-            this.quickResponse(serverRes, 500, {
+            this.quickResponse(serverRes, 400, {
               error: 'MISSING_KEY_PARAM'
             });
             break;
           }
 
           if (params?.k?.length <= 0) {
-            this.quickResponse(serverRes, 500, {
+            this.quickResponse(serverRes, 400, {
               error: 'EMPTY_KEY'
             });
             break;
           }
 
           if (params?.k?.length >= this.maxKeyLength) {
-            this.quickResponse(serverRes, 500, {
+            this.quickResponse(serverRes, 400, {
               error: 'MAXIMUM_KEY_LENGTH_REACHED'
             });
             break;
@@ -341,21 +341,21 @@ class Server {
         // Checks - skip them if request is from another node
         if (!params.nodeId) {
           if (typeof params?.k === 'undefined') {
-            this.quickResponse(serverRes, 500, {
+            this.quickResponse(serverRes, 400, {
               error: 'MISSING_KEY_PARAM'
             });
             break;
           }
 
           if (params?.k?.length <= 0) {
-            this.quickResponse(serverRes, 500, {
+            this.quickResponse(serverRes, 400, {
               error: 'EMPTY_KEY'
             });
             break;
           }
 
           if (params?.k?.length >= this.maxKeyLength) {
-            this.quickResponse(serverRes, 500, {
+            this.quickResponse(serverRes, 400, {
               error: 'MAXIMUM_KEY_LENGTH_REACHED'
             });
             break;
@@ -400,21 +400,21 @@ class Server {
       case '/is': {
         // Checks
         if (typeof params?.k === 'undefined') {
-          this.quickResponse(serverRes, 500, {
+          this.quickResponse(serverRes, 400, {
             error: 'MISSING_KEY_PARAM'
           });
           break;
         }
 
         if (params?.k?.length <= 0) {
-          this.quickResponse(serverRes, 500, {
+          this.quickResponse(serverRes, 400, {
             error: 'EMPTY_KEY'
           });
           break;
         }
 
         if (params?.k?.length >= this.maxKeyLength) {
-          this.quickResponse(serverRes, 500, {
+          this.quickResponse(serverRes, 400, {
             error: 'MAXIMUM_KEY_LENGTH_REACHED'
           });
           break;
@@ -485,7 +485,7 @@ class Server {
         if (!params.nodeId) {
           // @todo make real URL check here
           if (params?.myUrl?.length <= 5) {
-            this.quickResponse(serverRes, 500, {
+            this.quickResponse(serverRes, 400, {
               error: 'ENTER_VALID_URL'
             });
             break;
