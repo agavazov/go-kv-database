@@ -21,6 +21,7 @@ let db = {};
 const maxKeyLength = 64;
 const maxValueLength = 256;
 const nodeId = `DB_${process.env.HOSTNAME}`;
+const servicePort = process.env.SERVICE_PORT || 80;
 
 // All in once
 const server = http.createServer((req, res) => {
@@ -198,7 +199,6 @@ const server = http.createServer((req, res) => {
 });
 
 // Start the server
-const servicePort = process.env.SERVICE_PORT || 80;
 server.listen(servicePort, '0.0.0.0', () => {
   console.log(`Server is running on http://localhost:${servicePort} [NodeId: ${nodeId}]`);
 });

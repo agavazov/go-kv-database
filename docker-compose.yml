@@ -12,6 +12,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+    networks:
+      - db-nodes
 
   database:
     build: ./database-draft
@@ -20,7 +22,8 @@ services:
       replicas: ${DATABASE_REPLICAS}
     environment:
       SERVICE_PORT: 80
-    command: npm run start --prefix /app
+    working_dir: /app
+    command: npm run serve
     healthcheck:
       test: "wget --no-verbose --tries=1 --spider http://127.0.0.1/healthcheck || exit 1"
       interval: 5s
@@ -31,9 +34,21 @@ services:
       memlock:
         soft: -1
         hard: -1
+    networks:
+      - db-nodes
 
   tests:
     build: ./tests
     environment:
       SERVICE_URL: "http://proxy"
-    # command: npm run test:dev --prefix /app
+    working_dir: /app
+    # command: npm run test
+    # command: npm run stress
+    depends_on:
+      - proxy
+    networks:
+      - db-nodes
+
+networks:
+  db-nodes:
+    driver: bridge
