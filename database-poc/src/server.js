@@ -143,7 +143,7 @@ class Server {
           // Push on success (503 is success)
           this.settings.meshNodes.push(this.settings.meshNetworkUrl);
         } else {
-          console.warn('joinToMesh.meshNetworkUrl.askToJoin', e);
+          this.log(['joinToMesh.meshNetworkUrl.askToJoin', e], this.logLevels.SYSTEM_MESSAGES);
         }
       }
 
@@ -184,7 +184,7 @@ class Server {
 
         // If it`s warming up it`s ok
         if (e?.request?.res?.statusCode !== 503) {
-          console.warn('joinToMesh.meshNetworkUrl.getAllData', e);
+          this.log(['joinToMesh.meshNetworkUrl.getAllData', e], this.logLevels.SYSTEM_MESSAGES);
         }
       }
     }
