@@ -3,14 +3,14 @@ import { expect } from 'chai';
 import axios from 'axios';
 import { config } from '../lib/config';
 
-describe('/settings', () => {
-  describe('Get node settings', () => {
+describe('/status', () => {
+  describe('Get node status', () => {
     it('Should return expected setting properties as a response', async () => {
       let response;
       let error: any | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/settings`);
+        response = await axios.get(`${config.serviceUrl}/status`);
       } catch (e) {
         error = e;
       }

@@ -1,6 +1,6 @@
 // Specify the order of the tests
 import('./spec/healthcheck.spec');
-import('./spec/settings.spec');
+import('./spec/status.spec');
 
 import('./spec/set.spec');
 import('./spec/get.spec');

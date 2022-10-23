@@ -1,5 +1,6 @@
 const http = require('http');
 const url = require('url');
+const path = require('path');
 
 /*******************************************************************/
 /* Draft code with duplicated snippets and many non-good practices */
@@ -18,41 +19,72 @@ const quickResponse = (res, code, data) => {
 let db = {};
 
 // Settings
-const maxKeyLength = 64;
-const maxValueLength = 256;
-const nodeId = `DB_${process.env.HOSTNAME}`;
-const servicePort = process.env.SERVICE_PORT || 80;
+const settings = {
+  version: require(path.join(__dirname, './../package.json')).version,
+  nodeId: `DB_${process.env.HOSTNAME}`,
+  servicePort: process.env.SERVICE_PORT || 80,
+  host: process.env.SERVICE_HOST || '0.0.0.0',
+  isWarmup: true,
+  meshNetworkUrl: process.env.MESH_NETWORK_URL || null,
+  meshNodes: [] // List of the joined nodes
+};
+
+// Warmup
+setTimeout(() => {
+  settings.isWarmup = false;
+  console.log(`Service is warmed up and synced with 5 more nodes [NodeId: ${settings.nodeId}] `);
+}, 3000);
 
 // All in once
 const server = http.createServer((req, res) => {
   const urlParse = url.parse(req.url, true);
+  const maxKeyLength = 64;
+  const maxValueLength = 256;
+
   // console.log('urlParse.path', urlParse.path);
+
+  if (settings.isWarmup) {
+    quickResponse(res, 503, {
+      warmingUp: true
+    });
+    return;
+  }
 
   switch (urlParse.pathname) {
     case '/set': {
       // Checks
       if (typeof urlParse?.query?.k === 'undefined') {
-        quickResponse(res, 500, {error: 'MISSING_KEY_PARAM'});
+        quickResponse(res, 500, {
+          error: 'MISSING_KEY_PARAM'
+        });
         break;
       }
 
       if (urlParse?.query?.k?.length <= 0) {
-        quickResponse(res, 500, {error: 'EMPTY_KEY'});
+        quickResponse(res, 500, {
+          error: 'EMPTY_KEY'
+        });
         break;
       }
 
       if (urlParse?.query?.k?.length >= maxKeyLength) {
-        quickResponse(res, 500, {error: 'MAXIMUM_KEY_LENGTH_REACHED'});
+        quickResponse(res, 500, {
+          error: 'MAXIMUM_KEY_LENGTH_REACHED'
+        });
         break;
       }
 
       if (typeof urlParse?.query?.v === 'undefined') {
-        quickResponse(res, 500, {error: 'MISSING_VALUE_PARAM'});
+        quickResponse(res, 500, {
+          error: 'MISSING_VALUE_PARAM'
+        });
         break;
       }
 
       if (urlParse?.query?.v?.length >= maxValueLength) {
-        quickResponse(res, 500, {error: 'MAXIMUM_VALUE_LENGTH_REACHED'});
+        quickResponse(res, 500, {
+          error: 'MAXIMUM_VALUE_LENGTH_REACHED'
+        });
         break;
       }
 
@@ -60,29 +92,39 @@ const server = http.createServer((req, res) => {
       db[urlParse.query.k] = urlParse.query.v;
 
       // Response
-      quickResponse(res, 200, {success: true});
+      quickResponse(res, 200, {
+        success: true
+      });
       break;
     }
 
     case '/get': {
       // Checks
       if (typeof urlParse?.query?.k === 'undefined') {
-        quickResponse(res, 500, {error: 'MISSING_KEY_PARAM'});
+        quickResponse(res, 500, {
+          error: 'MISSING_KEY_PARAM'
+        });
         break;
       }
 
       if (urlParse?.query?.k?.length <= 0) {
-        quickResponse(res, 500, {error: 'EMPTY_KEY'});
+        quickResponse(res, 500, {
+          error: 'EMPTY_KEY'
+        });
         break;
       }
 
       if (urlParse?.query?.k?.length >= maxKeyLength) {
-        quickResponse(res, 500, {error: 'MAXIMUM_KEY_LENGTH_REACHED'});
+        quickResponse(res, 500, {
+          error: 'MAXIMUM_KEY_LENGTH_REACHED'
+        });
         break;
       }
 
       if (typeof db[urlParse.query.k] === 'undefined') {
-        quickResponse(res, 404, {error: 'MISSING_RECORD'});
+        quickResponse(res, 404, {
+          error: 'MISSING_RECORD'
+        });
         break;
       }
 
@@ -94,22 +136,30 @@ const server = http.createServer((req, res) => {
     case '/rm': {
       // Checks
       if (typeof urlParse?.query?.k === 'undefined') {
-        quickResponse(res, 500, {error: 'MISSING_KEY_PARAM'});
+        quickResponse(res, 500, {
+          error: 'MISSING_KEY_PARAM'
+        });
         break;
       }
 
       if (urlParse?.query?.k?.length <= 0) {
-        quickResponse(res, 500, {error: 'EMPTY_KEY'});
+        quickResponse(res, 500, {
+          error: 'EMPTY_KEY'
+        });
         break;
       }
 
       if (urlParse?.query?.k?.length >= maxKeyLength) {
-        quickResponse(res, 500, {error: 'MAXIMUM_KEY_LENGTH_REACHED'});
+        quickResponse(res, 500, {
+          error: 'MAXIMUM_KEY_LENGTH_REACHED'
+        });
         break;
       }
 
       if (typeof db[urlParse.query.k] === 'undefined') {
-        quickResponse(res, 404, {error: 'MISSING_RECORD'});
+        quickResponse(res, 404, {
+          error: 'MISSING_RECORD'
+        });
         break;
       }
 
@@ -117,7 +167,9 @@ const server = http.createServer((req, res) => {
       delete db[urlParse.query.k];
 
       // Response
-      quickResponse(res, 200, {success: true});
+      quickResponse(res, 200, {
+        success: true
+      });
       break;
     }
 
@@ -126,34 +178,46 @@ const server = http.createServer((req, res) => {
       db = {};
 
       // Response
-      quickResponse(res, 200, {success: true});
+      quickResponse(res, 200, {
+        success: true
+      });
       break;
     }
 
     case '/is': {
       // Checks
       if (typeof urlParse?.query?.k === 'undefined') {
-        quickResponse(res, 500, {error: 'MISSING_KEY_PARAM'});
+        quickResponse(res, 500, {
+          error: 'MISSING_KEY_PARAM'
+        });
         break;
       }
 
       if (urlParse?.query?.k?.length <= 0) {
-        quickResponse(res, 500, {error: 'EMPTY_KEY'});
+        quickResponse(res, 500, {
+          error: 'EMPTY_KEY'
+        });
         break;
       }
 
       if (urlParse?.query?.k?.length >= maxKeyLength) {
-        quickResponse(res, 500, {error: 'MAXIMUM_KEY_LENGTH_REACHED'});
+        quickResponse(res, 500, {
+          error: 'MAXIMUM_KEY_LENGTH_REACHED'
+        });
         break;
       }
 
       if (typeof db[urlParse.query.k] === 'undefined') {
-        quickResponse(res, 404, {error: 'MISSING_RECORD'});
+        quickResponse(res, 404, {
+          error: 'MISSING_RECORD'
+        });
         break;
       }
 
       // Response
-      quickResponse(res, 200, {success: true});
+      quickResponse(res, 200, {
+        success: true
+      });
       break;
     }
 
@@ -177,17 +241,20 @@ const server = http.createServer((req, res) => {
 
     case '/healthcheck': {
       // Response
-      quickResponse(res, 200, {status: 'health'});
+      quickResponse(res, 200, {
+        status: 'ok'
+      });
       break;
     }
 
-    case '/settings': {
+    case '/status': {
       // Response
       quickResponse(res, 200, {
-        version: '0.0.1',
-        maxKeyLength,
-        maxValueLength,
-        nodeId
+        version: settings.version,
+        nodeId: settings.nodeId,
+        meshNodes: settings.meshNodes,
+        maxKeyLength: maxKeyLength,
+        maxValueLength: maxValueLength
       });
       break;
     }
@@ -199,6 +266,6 @@ const server = http.createServer((req, res) => {
 });
 
 // Start the server
-server.listen(servicePort, '0.0.0.0', () => {
-  console.log(`Server is running on http://localhost:${servicePort} [NodeId: ${nodeId}]`);
+server.listen(settings.servicePort, settings.host, () => {
+  console.log(`Service is running on [http://127.0.0.1:${settings.servicePort}] [NodeId: ${settings.nodeId}]`);
 });

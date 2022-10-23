@@ -16,7 +16,7 @@ const report: { [key: string]: any } = {
 const worker = async () => {
   while (requestsAmount > 0) {
     try {
-      let response = await axios.get(`${serviceUrl}/set?k=stress:${requestsAmount}&v=value:${requestsAmount}`);
+      await axios.get(`${serviceUrl}/set?k=stress:${requestsAmount}&v=value:${requestsAmount}`);
       report.success++;
     } catch (e) {
       report.errors++;
