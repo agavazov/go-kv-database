@@ -43,3 +43,13 @@ func ValidateValue(params url.Values) error {
 
 	return nil
 }
+
+func ValidateMyUrl(params url.Values) error {
+	values, exists := params["myUrl"]
+
+	if exists != true || len(values) <= 4 {
+		return errors.New("ENTER_VALID_URL")
+	}
+
+	return nil
+}

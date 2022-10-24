@@ -8,17 +8,18 @@ import (
 )
 
 func Status(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]any{
-		"version":          app.Version,
-		"nodeId":           app.NodeId,
-		"servicePort":      app.ServicePort,
-		"serviceUrl":       app.ServiceUrl,
-		"serviceLogLevel":  app.ServiceLogLevel,
-		"isWarmup":         app.IsWarmup,
-		"meshNetworkUrl":   app.MeshNetworkUrl,
-		"meshNodes":        app.MeshNodes,
-		"maxKeyLength":     app.MaxKeyLength,
-		"maxValueLength":   app.MaxValueLength,
-		"availableRecords": len(storage.GetAll()),
+	// Response
+	return c.JSON(http.StatusOK, app.ServiceStatus{
+		Version:          app.Version,
+		NodeId:           app.NodeId,
+		ServicePort:      app.ServicePort,
+		ServiceUrl:       app.ServiceUrl,
+		ServiceLogLevel:  app.ServiceLogLevel,
+		IsWarmup:         app.IsWarmup,
+		MeshNetworkUrl:   app.MeshNetworkUrl,
+		MeshNodes:        app.MeshNodes,
+		MaxKeyLength:     app.MaxKeyLength,
+		MaxValueLength:   app.MaxValueLength,
+		AvailableRecords: len(storage.GetAll()),
 	})
 }

@@ -34,7 +34,7 @@ class Server {
     this.settings = {
       version: require(path.join(__dirname, './../package.json')).version,
       nodeId: `DB_${process.env.HOSTNAME}`,
-      servicePort: process.env.SERVICE_PORT || 80,
+      servicePort: Number(process.env.SERVICE_PORT) || 80,
       serviceUrl: process.env.SERVICE_URL,
       serviceLogLevel: parseInt(process.env.LOG_LEVEL) || 0,
       isWarmup: true,

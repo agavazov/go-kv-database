@@ -37,6 +37,10 @@
 - Add better tests explanations
 - Add attach method (for the mesh, will be attached only after the status is `helath` and deatached if the status is `sick`)
 
+
+![svg](/docs/mesh-state-1.svg)
+![svg](/docs/mesh-state-2.svg)
+
 # Requirements
 
 ✅ In-memory

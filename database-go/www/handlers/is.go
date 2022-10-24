@@ -8,15 +8,18 @@ import (
 )
 
 func Is(c echo.Context) error {
+	// Request validation
 	if err := www.ValidateKey(c.QueryParams()); err != nil {
 		return www.InvalidInputResponse(c, err.Error())
 	}
 
+	// Database actions & missing record check
 	key := c.QueryParam("k")
 	if _, found := storage.Get(key); found != true {
 		return www.NotFoundResponse(c, "MISSING_RECORD")
 	}
 
+	// Response
 	return c.JSON(http.StatusOK, map[string]bool{
 		"success": true,
 	})

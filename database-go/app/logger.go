@@ -4,10 +4,10 @@ import (
 	"fmt"
 )
 
-func Logger(message any, level int) {
+func Logger(level int, msg ...any) {
 	if level <= ServiceLogLevel {
 		return
 	}
 
-	fmt.Printf("%+v\n", message)
+	fmt.Printf(">>> %+v\n", msg)
 }

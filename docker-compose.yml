@@ -59,6 +59,8 @@ services:
         hard: -1
     networks:
       - db-nodes
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   tests:
     build: ./tests

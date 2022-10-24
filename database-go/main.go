@@ -11,6 +11,9 @@ func main() {
 	// Load env settings
 	app.LoadSettings()
 
+	// Start mesh checks & join process parallel with the http server starting
+	app.AsyncMeshJoin()
+
 	// Echo instance
 	e := echo.New()
 	e.HideBanner = true
@@ -49,6 +52,6 @@ func main() {
 	e.GET("/join", handlers.Join)
 
 	// Start server
-	app.Logger(fmt.Sprintf("GO Running on %s [NodeId: %s]", app.ServiceUrl, app.NodeId), 1)
+	app.Logger(1, fmt.Sprintf("GO Running on %s [NodeId: %s]", app.ServiceUrl, app.NodeId))
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", app.ServicePort)))
 }

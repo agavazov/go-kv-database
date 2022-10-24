@@ -1,5 +1,6 @@
 package storage
 
+// @todo
 // - Thing for some sharding & clustering
 // - Reserve memory for each record
 // - Check for reference return

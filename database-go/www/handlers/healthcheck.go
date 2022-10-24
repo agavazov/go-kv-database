@@ -6,7 +6,8 @@ import (
 )
 
 func Healthcheck(c echo.Context) error {
+	// Response
 	return c.JSON(http.StatusOK, map[string]string{
-		"service": "healthcheck.go",
+		"status": "ok",
 	})
 }
