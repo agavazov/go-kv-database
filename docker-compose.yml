@@ -40,10 +40,11 @@ services:
     build: ./database-poc
     deploy:
       mode: replicated
-      replicas: ${DATABASE_REPLICAS}
+      # replicas: ${DATABASE_REPLICAS}
+      replicas: 1
     environment:
       SERVICE_PORT: 80 # Service HTTP port
-      MESH_NETWORK_URL: "http://proxy:80" # The url to join to the mesh (usually for production is the loadBalancer URL)
+      # MESH_NETWORK_URL: "http://proxy:80" # The url to join to the mesh (usually for production is the loadBalancer URL)
       LOG_LEVEL: 0 # Log level 0 to 4 (check service documentation)
     working_dir: /app
     command: npm run start

@@ -138,7 +138,7 @@ func JoinToNode(nodeUrl string) {
 	srvInfo, respCode, err := RequestNode[ServiceStatus](fmt.Sprintf("%s/status", nodeUrl),
 		ReqParam{},
 		10,
-		100,
+		1000,
 	)
 
 	// If the other node is not accessible then current service must be stopped

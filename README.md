@@ -1,5 +1,20 @@
 # KV database written in GO with 
 
+### Build the project
+`docker compose build`
+
+### Start everything
+`docker compose up`
+
+### Run all integration tests
+`docker compose run tests npm run test`
+
+### Attach new database node
+`docker compose run database`
+
+### Stress tests
+`docker compose run tests npm run stress`
+
 
 # @todo
 - Docs 1h
