@@ -1,5 +1,6 @@
 package storage
 
+// - Thing for some sharding & clustering
 // - Reserve memory for each record
 // - Check for reference return
 // - Keys & Values methods can be optimised (keep the length somewhere or use array)

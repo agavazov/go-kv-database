@@ -1,11 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"github.com/labstack/echo/v4"
+	"go-kv-database/app"
 	"go-kv-database/www/handlers"
 )
 
 func main() {
+	// Load env settings
+	app.LoadSettings()
+
 	// Echo instance
 	e := echo.New()
 	e.HideBanner = true
@@ -44,5 +49,6 @@ func main() {
 	e.GET("/join", handlers.Join)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":22122"))
+	app.Logger(fmt.Sprintf("GO Running on %s [NodeId: %s]", app.ServiceUrl, app.NodeId), 1)
+	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", app.ServicePort)))
 }

@@ -569,5 +569,5 @@ const server = new Server();
 // Start the http server
 const app = http.createServer(server.requestHandler.bind(server));
 app.listen(server.settings.servicePort, '0.0.0.0', () => {
-  console.log(`Running on ${server.settings.serviceUrl} [NodeId: ${server.settings.nodeId}]`);
+  console.log(`NODEJS Running on ${server.settings.serviceUrl} [NodeId: ${server.settings.nodeId}]`);
 });

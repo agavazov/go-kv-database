@@ -1,9 +1,9 @@
 package handlers
 
 import (
-  "github.com/labstack/echo/v4"
-  "go-kv-database/storage"
-  "net/http"
+	"github.com/labstack/echo/v4"
+	"go-kv-database/storage"
+	"net/http"
 )
 
 func Clear(c echo.Context) error {
