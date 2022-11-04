@@ -20,12 +20,17 @@
     // Use better way to include libraries after compiling
     "esModuleInterop": true,
     // Append source map after compiling
-    "sourceMap": true,
+    "sourceMap": false,
     // Remove code comments after compiling
     "removeComments": false,
     // Location of the paths param,
     "baseUrl": "./",
+    // Generate d.ts files
+    "declaration": false,
     // Library aliases (use `tsconfig-paths` to load them)
-    "paths": {}
-  }
+    "paths": {
+    }
+  },
+  "exclude": [
+  ]
 }

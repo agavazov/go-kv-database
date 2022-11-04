@@ -15,6 +15,8 @@
     "forceConsistentCasingInFileNames": true,
     // Output compiling directory
     "outDir": "./dist",
+    // Code directory
+    "rootDir": "./src",
     // Use better way to include libraries after compiling
     "esModuleInterop": true,
     // Append source map after compiling
@@ -23,6 +25,8 @@
     "removeComments": false,
     // Location of the paths param,
     "baseUrl": "./",
+    // Generate d.ts files
+    "declaration": true,
     // Library aliases (use `tsconfig-paths` to load them)
     "paths": {
     }
