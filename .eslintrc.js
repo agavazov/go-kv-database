@@ -6,21 +6,32 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended'
+    'plugin:@typescript-eslint/recommended',
+    'plugin:import/typescript',
+    'prettier'
   ],
   parser: '@typescript-eslint/parser',
   plugins: [
+    'eslint-plugin-import',
     '@typescript-eslint'
   ],
   rules: {
-    'quotes': [2, 'single', {'avoidEscape': true}],
+    'quotes': [2, 'single', { 'avoidEscape': true }],
     '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/consistent-type-assertions': 'error',
     '@typescript-eslint/no-non-null-assertion': 'error',
-    // '@typescript-eslint/no-unused-expressions': 'error',
     'curly': 'error',
+    'import/first': 'error',
+    'import/newline-after-import': 'error',
+    'import/no-absolute-path': 'error',
+    'import/no-duplicates': 'error',
+    'import/no-unassigned-import': ['error', { 'allow': ['symbol-observable'] }],
+    'import/order': ['error', {
+      'alphabetize': { 'order': 'asc' },
+      'groups': [['builtin', 'external'], 'parent', 'sibling', 'index']
+    }],
     'max-len': [
       'error',
       {
@@ -50,33 +61,19 @@ module.exports = {
         'next': 'return'
       }
     ],
-    'sort-imports': ['error', {'ignoreDeclarationSort': true}],
+    'sort-imports': ['error', { 'ignoreDeclarationSort': true }],
     'spaced-comment': [
       'error',
       'always',
       {
         'markers': ['/']
       }
-    ]
-    // 'no-case-declarations': 'error',
-    // 'no-fallthrough': 'error',
-    // 'no-underscore-dangle': 'error',
-    // '@typescript-eslint/await-thenable': 'error',
-    // '@typescript-eslint/ban-types': 'error',
-    // '@typescript-eslint/no-empty-function': 'error',
-    // '@typescript-eslint/explicit-module-boundary-types': 'error',
-    // '@typescript-eslint/no-implied-eval': 'error',
-    // '@typescript-eslint/no-var-requires': 'error',
-    // '@typescript-eslint/no-unnecessary-type-assertion': 'error',
-    // '@typescript-eslint/no-unsafe-argument': 'error',
-    // '@typescript-eslint/no-unsafe-assignment': 'error',
-    // '@typescript-eslint/no-unsafe-call': 'error',
-    // '@typescript-eslint/no-unsafe-member-access': 'error',
-    // '@typescript-eslint/no-unsafe-return': 'error',
-    // '@typescript-eslint/prefer-regexp-exec': 'error',
-    // '@typescript-eslint/require-await': 'error',
-    // '@typescript-eslint/restrict-plus-operands': 'error',
-    // '@typescript-eslint/restrict-template-expressions': 'error',
-    // '@typescript-eslint/unbound-method': 'error'
+    ],
+    'no-case-declarations': 'error',
+    'no-fallthrough': 'error',
+    'no-underscore-dangle': 'error',
+    '@typescript-eslint/ban-types': 'error',
+    '@typescript-eslint/no-empty-function': 'error',
+    '@typescript-eslint/explicit-module-boundary-types': 'error'
   }
 };

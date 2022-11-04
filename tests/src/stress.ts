@@ -1,10 +1,13 @@
 import axios from 'axios';
 
-let requestsAmount = 100000;
-
-const clusters = 50;
-const workersPerCluster = 20;
+// Configuration
+const requestsAmount = Number(process.env.STRESS_AMOUNT) || 100000;
+const clusters = Number(process.env.STRESS_CLUSTERS) || 20;
+const workersPerCluster = Number(process.env.STERSS_WORKERS) || 10;
 const serviceUrl = process.env.SERVICE_URL;
+
+// Preparation
+let leftAmount = requestsAmount;
 const report: {
   errors: number
   success: number
@@ -19,22 +22,23 @@ const report: {
   end: null
 };
 
+// Do the work
 const worker = async () => {
-  while (requestsAmount > 0) {
+  while (leftAmount > 0) {
     try {
-      await axios.get(`${serviceUrl}/set?k=stress:${requestsAmount}&v=value:${requestsAmount}`);
+      await axios.get(`${serviceUrl}/set?k=stress:${leftAmount}&v=value:${leftAmount}`);
       report.success++;
     } catch (e) {
       report.errors++;
     }
 
-    requestsAmount--;
+    leftAmount--;
 
-    if (requestsAmount % 1000 === 0) {
-      console.log(`Left requests: ${requestsAmount}`);
+    if (leftAmount % 1000 === 0) {
+      console.log(`Left requests: ${leftAmount}`);
     }
 
-    if (requestsAmount <= 0) {
+    if (leftAmount <= 0) {
       showReport();
     }
   }
@@ -63,9 +67,10 @@ const showReport = () => {
   process.exit(0);
 };
 
+
 (async () => {
   console.log('Stress test with:');
-  console.log(` - Requests: ${requestsAmount}`);
+  console.log(` - Requests: ${leftAmount}`);
   console.log(` - Clusters: ${clusters}`);
   console.log(` - Workers per cluster: ${workersPerCluster}`);
   console.log('\n==================\n');

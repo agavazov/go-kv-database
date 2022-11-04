@@ -1,6 +1,5 @@
-import 'mocha';
-import { expect } from 'chai';
 import axios from 'axios';
+import { expect } from 'chai';
 import { config } from '../lib/config';
 
 describe('/getKeys command', () => {
