@@ -17,6 +17,12 @@
 
 
 # @todo
+- circle ci
+- liniters
+- prittier
+- FULL MESH
+- PARTIAL MESH
+- STARSHAPE MESH
 - Docs 1h
 - Run CI (for both branches) 1h 
 - Write GO
@@ -29,6 +35,7 @@
 - Avg request response: 1.52 ms (go; docker + load balancer; single node)
 
 ## Docs
+- Кажи че TS е на strict ниво
 - Кажи че с джоиннването само към един нод, автоматично се джоинват всички нодове
 - Кажи че има и warmup queue за да не се изпускат неща
 - !!! to add node ` docker compose run database` while the others are running

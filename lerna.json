@@ -1,0 +1,8 @@
+{
+  "packages": [
+    "./database/",
+    "./load-balancer/",
+    "./tests/"
+  ],
+  "version": "independent"
+}

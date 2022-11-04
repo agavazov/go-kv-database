@@ -1,0 +1,25 @@
+{
+  "name": "nkvd-monorepo",
+  "version": "0.0.1",
+  "author": "Alexander Gavazov",
+  "private": true,
+  "license": "MIT",
+  "homepage": "https://github.com/agavazov/nkvd",
+  "scripts": {
+    "start-database": "npm --prefix ./database run start",
+    "build-database": "npm --prefix ./database run build",
+    "watch-database": "npm --prefix ./database run watch",
+    "start-load-balancer": "npm --prefix ./database run start",
+    "build-load-balancer": "npm --prefix ./database run build",
+    "watch-load-balancer": "npm --prefix ./database run watch",
+    "test": "npm --prefix ./tests run test",
+    "start": "concurrently \"npm:start-*\"",
+    "build": "concurrently \"npm:build-*\"",
+    "watch": "concurrently \"npm:watch-*\"",
+    "postinstall": "lerna bootstrap && npm run build"
+  },
+  "dependencies": {
+    "concurrently": "^7.5.0",
+    "lerna": "^6.0.1"
+  }
+}
