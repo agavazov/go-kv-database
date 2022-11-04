@@ -1,10 +1,9 @@
-// curl -s --unix-socket /var/run/docker.sock http://dummy/containers/json
-
 const http = require('http');
+
+// curl -s --unix-socket /var/run/docker.sock http://dummy/containers/json
 
 const requestListener = function (req, res) {
   console.log(req.url);
-
 
 
   const options = {

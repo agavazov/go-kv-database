@@ -7,7 +7,7 @@ describe('/status', () => {
   describe('Get node status', () => {
     it('Should return expected setting properties as a response', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/status`);

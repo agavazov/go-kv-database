@@ -7,7 +7,7 @@ describe('/getAll command', () => {
   describe('Successful clear all the records', () => {
     it('Should [clear all records] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/clear`);
@@ -35,7 +35,7 @@ describe('/getAll command', () => {
       for (let i = 1; i <= 2; i++) {
         for (const testItem of testRecords) {
           let response;
-          let error: any | undefined;
+          let error: unknown | undefined;
 
           try {
             response = await axios.get(`${config.serviceUrl}/set?k=${testItem.k}&v=${testItem.v}`);
@@ -56,7 +56,7 @@ describe('/getAll command', () => {
 
     it('Should [get the SAME UNIQUE records] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/getAll`);

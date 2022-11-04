@@ -5,7 +5,13 @@ let requestsAmount = 100000;
 const clusters = 50;
 const workersPerCluster = 20;
 const serviceUrl = process.env.SERVICE_URL;
-const report: { [key: string]: any } = {
+const report: {
+  errors: number
+  success: number
+  total: number
+  start: Date
+  end: Date | null
+} = {
   errors: 0,
   success: 0,
   total: requestsAmount,
@@ -42,10 +48,10 @@ const stress = async () => {
 
 const showReport = () => {
   report.end = new Date();
-  const timeDiff = Math.abs(report.start - report.end);
+  const timeDiff = Math.abs(report.start.getTime() - report.end.getTime());
 
-  console.log(`\n==================\n`);
-  console.log(`Report:`);
+  console.log('\n==================\n');
+  console.log('Report:');
   console.log(` - Total requests: ${report.total}`);
   console.log(` - Total time: ${(timeDiff / 1000).toFixed(2)} sec`);
   console.log(` - Avg request response: ${(report.total / timeDiff).toFixed(2)} ms`);
@@ -58,11 +64,11 @@ const showReport = () => {
 };
 
 (async () => {
-  console.log(`Stress test with:`);
+  console.log('Stress test with:');
   console.log(` - Requests: ${requestsAmount}`);
   console.log(` - Clusters: ${clusters}`);
   console.log(` - Workers per cluster: ${workersPerCluster}`);
-  console.log(`\n==================\n`);
+  console.log('\n==================\n');
 
   for (let i = 1; i <= clusters; i++) {
     stress().catch(console.error);

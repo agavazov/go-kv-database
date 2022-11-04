@@ -9,7 +9,7 @@ describe('/is command', () => {
 
     it('Should save [normal record] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set?k=${testKey}&v=ok`);
@@ -28,7 +28,7 @@ describe('/is command', () => {
 
     it('Should find the [same exists record] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/is?k=${testKey}`);
@@ -47,7 +47,7 @@ describe('/is command', () => {
 
     it('Should [remove the same record] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/rm?k=${testKey}`);
@@ -66,7 +66,7 @@ describe('/is command', () => {
 
     it('Should respond with an error for [missing record] after try to check the same record again', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/is?k=${testKey}`);
@@ -87,7 +87,7 @@ describe('/is command', () => {
   describe('Fail scenarios', () => {
     it('Should respond with an error for [missing key]', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/is`);
@@ -106,7 +106,7 @@ describe('/is command', () => {
 
     it('Should respond with an error for [empty key]', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/is?k=`);
@@ -125,7 +125,7 @@ describe('/is command', () => {
 
     it('Should respond with an error for [maximum key length] reached', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/is?k=${'x'.repeat(500)}`);

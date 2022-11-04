@@ -7,7 +7,7 @@ describe('/set command', () => {
   describe('Successful record set', () => {
     it('Should save [empty value] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set?k=test:set:2&v=`);
@@ -26,7 +26,7 @@ describe('/set command', () => {
 
     it('Should save [normal value] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set?k=test:set:3&v=ok`);
@@ -50,7 +50,7 @@ describe('/set command', () => {
 
     it('Should save [UTF8 key] and [UTF16 value] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set?k=${testKey}&v=${testValue}`);
@@ -69,7 +69,7 @@ describe('/set command', () => {
 
     it('Should get the [UTF16 value] by the [UTF8 key] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/get?k=${testKey}`);
@@ -90,7 +90,7 @@ describe('/set command', () => {
   describe('Fail scenarios', () => {
     it('Should respond with an error for [missing key]', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set`);
@@ -109,7 +109,7 @@ describe('/set command', () => {
 
     it('Should respond with an error for [empty key]', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set?k=`);
@@ -128,7 +128,7 @@ describe('/set command', () => {
 
     it('Should respond with an error for [maximum key length] reached', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set?k=${'x'.repeat(500)}`);
@@ -147,7 +147,7 @@ describe('/set command', () => {
 
     it('Should respond with an error for missing [value]', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set?k=test:set`);
@@ -166,7 +166,7 @@ describe('/set command', () => {
 
     it('Should respond with an error for [maximum value length] reached', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set?k=test:set&v=${'x'.repeat(1000)}`);

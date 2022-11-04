@@ -8,7 +8,7 @@ describe('/healthcheck', () => {
   describe('Wait to warmup', () => {
     const tries = 10;
 
-    it(`Should be warmed up soon`, async () => {
+    it('Should be warmed up soon', async () => {
       // Get the status
       const isWarmedUp = await warmupCheck(tries);
 
@@ -20,7 +20,7 @@ describe('/healthcheck', () => {
   describe('Get node health status', () => {
     it('Should be healthy', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/healthcheck`);

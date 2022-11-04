@@ -7,7 +7,7 @@ interface SharedData {
   };
 }
 
-export let sharedData: SharedData = {
+export const sharedData: SharedData = {
   user: {
     id: null,
     email: `greenstak-test-user-${(new Date()).getTime()}@afy.li`,

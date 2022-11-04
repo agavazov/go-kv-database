@@ -1,13 +1,10 @@
-import * as fs from 'fs';
 import * as path from 'path';
+import * as fs from 'fs';
 
-/////////////////////
-
+// Build config
 const src = path.join(__dirname, './src');
 const dest = path.join(__dirname, './dist');
 const allowedExt = [];
-
-/////////////////////
 
 /**
  * Everything is compiled by tsc no extra help is needed
@@ -60,8 +57,7 @@ class Build {
   }
 }
 
-/////////////////////
-
+// Run the builder
 const builder = new Build();
 builder.deleteRecursive(dest);
 builder.copyRecursive(src, dest, allowedExt);

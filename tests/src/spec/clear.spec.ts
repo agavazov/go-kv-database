@@ -9,7 +9,7 @@ describe('/clear command', () => {
 
     it('Should save [normal record] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set?k=${testKey}&v=ok`);
@@ -28,7 +28,7 @@ describe('/clear command', () => {
 
     it('Should [get the some records] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/getAll`);
@@ -47,7 +47,7 @@ describe('/clear command', () => {
 
     it('Should [clear all records] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/clear`);

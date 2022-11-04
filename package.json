@@ -16,10 +16,18 @@
     "start": "concurrently \"npm:start-*\"",
     "build": "concurrently \"npm:build-*\"",
     "watch": "concurrently \"npm:watch-*\"",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
     "postinstall": "lerna bootstrap && npm run build"
   },
   "dependencies": {
     "concurrently": "^7.5.0",
     "lerna": "^6.0.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@typescript-eslint/parser": "^5.42.0",
+    "eslint": "^8.26.0",
+    "typescript": "^4.8.4"
   }
 }

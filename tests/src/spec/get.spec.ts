@@ -10,7 +10,7 @@ describe('/get command', () => {
 
     it('Should save [normal record] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set?k=${testKey}&v=${testValue}`);
@@ -29,7 +29,7 @@ describe('/get command', () => {
 
     it('Should [get the same record] without error', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/get?k=${testKey}`);
@@ -50,7 +50,7 @@ describe('/get command', () => {
   describe('Missing record', () => {
     it('Should respond with an error for [missing record]', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/get?k=test:get:missing`);
@@ -71,7 +71,7 @@ describe('/get command', () => {
   describe('Fail scenarios', () => {
     it('Should respond with an error for [missing key]', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/get`);
@@ -90,7 +90,7 @@ describe('/get command', () => {
 
     it('Should respond with an error for [empty key]', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/get?k=`);
@@ -109,7 +109,7 @@ describe('/get command', () => {
 
     it('Should respond with an error for [maximum key length] reached', async () => {
       let response;
-      let error: any | undefined;
+      let error: unknown | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/get?k=${'x'.repeat(500)}`);

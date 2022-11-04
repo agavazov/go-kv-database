@@ -6,7 +6,7 @@ export const warmupCheck = async (tries = 15): Promise<boolean> => {
 
   for (let i = 1; i <= tries; i++) {
     let response;
-    let error: any | undefined;
+    let error: unknown | undefined;
 
     try {
       response = await axios.get(`${config.serviceUrl}/`);
