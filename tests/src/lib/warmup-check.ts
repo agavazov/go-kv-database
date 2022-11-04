@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { config } from './config';
 
 export const warmupCheck = async (tries = 15): Promise<boolean> => {
@@ -6,12 +6,12 @@ export const warmupCheck = async (tries = 15): Promise<boolean> => {
 
   for (let i = 1; i <= tries; i++) {
     let response;
-    let error: unknown | undefined;
+    let error: AxiosError<any> | undefined;
 
     try {
       response = await axios.get(`${config.serviceUrl}/`);
     } catch (e) {
-      error = e;
+      error = e as AxiosError<any>;
     }
 
     // Get the status code from the response or from the error

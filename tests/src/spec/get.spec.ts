@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
 import { config } from '../lib/config';
 
@@ -9,12 +9,12 @@ describe('/get command', () => {
 
     it('Should save [normal record] without error', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set?k=${testKey}&v=${testValue}`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -28,12 +28,12 @@ describe('/get command', () => {
 
     it('Should [get the same record] without error', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/get?k=${testKey}`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -49,12 +49,12 @@ describe('/get command', () => {
   describe('Missing record', () => {
     it('Should respond with an error for [missing record]', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/get?k=test:get:missing`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -70,12 +70,12 @@ describe('/get command', () => {
   describe('Fail scenarios', () => {
     it('Should respond with an error for [missing key]', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/get`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -89,12 +89,12 @@ describe('/get command', () => {
 
     it('Should respond with an error for [empty key]', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/get?k=`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -108,12 +108,12 @@ describe('/get command', () => {
 
     it('Should respond with an error for [maximum key length] reached', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/get?k=${'x'.repeat(500)}`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors

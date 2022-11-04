@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
 import { config } from '../lib/config';
 
@@ -6,12 +6,12 @@ describe('/getValues command', () => {
   describe('Successful clear all the records', () => {
     it('Should [clear all records] without error', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/clear`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -34,12 +34,12 @@ describe('/getValues command', () => {
       for (let i = 1; i <= 2; i++) {
         for (const testItem of testRecords) {
           let response;
-          let error: unknown | undefined;
+          let error: AxiosError<any> | undefined;
 
           try {
             response = await axios.get(`${config.serviceUrl}/set?k=${testItem.k}&v=${testItem.v}`);
           } catch (e) {
-            error = e;
+            error = e as AxiosError<any>;
           }
 
           // Check errors
@@ -55,12 +55,12 @@ describe('/getValues command', () => {
 
     it('Should [get the SAME UNIQUE records values] without error', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/getValues`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors

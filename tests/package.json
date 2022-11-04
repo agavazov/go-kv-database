@@ -7,7 +7,7 @@
   "homepage": "https://github.com/agavazov/nkvd",
   "scripts": {
     "test": "mocha -r dotenv/config dist/wrapper --bail",
-    "test:dev": "mocha -r ts-node/register -r dotenv/config src/wrapper.ts --bail",
+    "test:dev": "mocha --require ts-node/register -r dotenv/config src/wrapper.ts --bail",
     "stress": "node -r dotenv/config dist/stress",
     "stress:dev": "ts-node -r dotenv/config src/stress.ts",
     "build": "tsc -p tsconfig.json"

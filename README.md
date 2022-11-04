@@ -35,6 +35,7 @@
 - Avg request response: 1.52 ms (go; docker + load balancer; single node)
 
 ## Docs
+- Кажи че всичко е type module
 - Кажи че TS е на strict ниво
 - Кажи че с джоиннването само към един нод, автоматично се джоинват всички нодове
 - Кажи че има и warmup queue за да не се изпускат неща

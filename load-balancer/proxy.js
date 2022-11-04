@@ -1,4 +1,5 @@
-const http = require('http');
+/* eslint @typescript-eslint/no-var-requires: "off" */
+import http from 'http';
 
 // curl -s --unix-socket /var/run/docker.sock http://dummy/containers/json
 

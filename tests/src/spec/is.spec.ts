@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
 import { config } from '../lib/config';
 
@@ -8,12 +8,12 @@ describe('/is command', () => {
 
     it('Should save [normal record] without error', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set?k=${testKey}&v=ok`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -27,12 +27,12 @@ describe('/is command', () => {
 
     it('Should find the [same exists record] without error', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/is?k=${testKey}`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -46,12 +46,12 @@ describe('/is command', () => {
 
     it('Should [remove the same record] without error', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/rm?k=${testKey}`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -65,12 +65,12 @@ describe('/is command', () => {
 
     it('Should respond with an error for [missing record] after try to check the same record again', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/is?k=${testKey}`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -86,12 +86,12 @@ describe('/is command', () => {
   describe('Fail scenarios', () => {
     it('Should respond with an error for [missing key]', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/is`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -105,12 +105,12 @@ describe('/is command', () => {
 
     it('Should respond with an error for [empty key]', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/is?k=`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -124,12 +124,12 @@ describe('/is command', () => {
 
     it('Should respond with an error for [maximum key length] reached', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/is?k=${'x'.repeat(500)}`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors

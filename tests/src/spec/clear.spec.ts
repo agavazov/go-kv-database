@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
 import { config } from '../lib/config';
 
@@ -8,12 +8,12 @@ describe('/clear command', () => {
 
     it('Should save [normal record] without error', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/set?k=${testKey}&v=ok`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -27,12 +27,12 @@ describe('/clear command', () => {
 
     it('Should [get the some records] without error', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/getAll`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -46,12 +46,12 @@ describe('/clear command', () => {
 
     it('Should [clear all records] without error', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/clear`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors

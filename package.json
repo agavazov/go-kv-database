@@ -17,7 +17,7 @@
     "build": "concurrently \"npm:build-*\"",
     "watch": "concurrently \"npm:watch-*\"",
     "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
+    "lint:fix": "eslint . --ext .ts,.js --fix",
     "postinstall": "lerna bootstrap && npm run build"
   },
   "dependencies": {

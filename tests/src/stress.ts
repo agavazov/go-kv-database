@@ -67,7 +67,6 @@ const showReport = () => {
   process.exit(0);
 };
 
-
 (async () => {
   console.log('Stress test with:');
   console.log(` - Requests: ${leftAmount}`);

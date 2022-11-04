@@ -1,12 +1,13 @@
-const http = require('http');
-const url = require('url');
-const path = require('path');
+/* eslint @typescript-eslint/no-var-requires: "off" */
 const axios = require('axios');
+const http = require('http');
+const path = require('path');
+const url = require('url');
 
-/*******************************************************************/
+/** *****************************************************************/
 /* Draft code with duplicated snippets and many non-good practices */
 
-/*******************************************************************/
+/** *****************************************************************/
 
 class Server {
   maxKeyLength = 64;
@@ -62,7 +63,7 @@ class Server {
       return;
     }
 
-    res.writeHead(code, {'Content-Type': 'text/json'});
+    res.writeHead(code, { 'Content-Type': 'text/json' });
     res.end(JSON.stringify(data));
   }
 
@@ -80,7 +81,8 @@ class Server {
     for (let i = 1; i <= loops; i++) {
       const requestUrl = `${url}?${(new URLSearchParams(params)).toString()}`;
       try {
-        let rs = await axios.get(requestUrl, {timeout: 1000});
+        let rs = await axios.get(requestUrl, { timeout: 1000 });
+
         return rs;
       } catch (e) {
         // Try one more time
@@ -100,7 +102,7 @@ class Server {
   // Join to mesh network and send my nodes to the others
   async joinToMesh() {
     if (!this.settings.meshNetworkUrl) {
-      this.log(`There is no defined mesh network URL`, this.logLevels.MESH_STATUS);
+      this.log('There is no defined mesh network URL', this.logLevels.MESH_STATUS);
       this.settings.isWarmup = false;
 
       // Run queue (totally not necessary to be done here, but in more complex wogic it will be)
@@ -149,7 +151,7 @@ class Server {
 
       // Get other node data - Move on when there is no data
       if (!serverStatus?.availableRecords) {
-        this.log(`No data was found in the mesh network`, this.logLevels.MESH_STATUS);
+        this.log('No data was found in the mesh network', this.logLevels.MESH_STATUS);
         this.settings.isWarmup = false;
 
         // Run queue
@@ -192,6 +194,7 @@ class Server {
 
   // Sync & check the mesh network (check each node and remove it when is down or join after warmup)
   meshSync() {
+    return;
   }
 
   // Send command to all working nodes
@@ -199,6 +202,7 @@ class Server {
     // Skip when comes from another node
     if (query.nodeId) {
       this.log(`Request replication skipped: comes from another node [${query.nodeId}]`, this.logLevels.MESH_STATUS);
+
       return;
     }
 
@@ -219,6 +223,7 @@ class Server {
   }
 
   // Dispatcher + all in once (this is draft poc script, not something to show on the public)
+  // eslint-disable-next-line max-lines-per-function
   actionRun(action, params, serverRes) {
     // Log
     if (params?.nodeId) {
@@ -448,7 +453,7 @@ class Server {
 
       case '/getAll': {
         // Response
-        this.quickResponse(serverRes, 200, Object.entries(this.db).map(([k, v]) => ({k, v})));
+        this.quickResponse(serverRes, 200, Object.entries(this.db).map(([k, v]) => ({ k, v })));
         break;
       }
 
@@ -492,7 +497,8 @@ class Server {
           }
         }
 
-        // Remove nodeId to be able to tell to the other nodes too (because this may come from another node and we don`t have to stop populate it)
+        // Remove nodeId to be able to tell to the other nodes too
+        // (because this may come from another node, and we don`t have to stop populate it)
         delete params.nodeId;
 
         // Check is already added

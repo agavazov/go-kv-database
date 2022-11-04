@@ -19,7 +19,7 @@ module.exports = {
     'quotes': [2, 'single', { 'avoidEscape': true }],
     '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/no-unused-vars': 'error',
-    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/consistent-type-assertions': 'error',
     '@typescript-eslint/no-non-null-assertion': 'error',
     'curly': 'error',

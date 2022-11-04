@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
 import { config } from '../lib/config';
 
@@ -6,12 +6,12 @@ describe('/status', () => {
   describe('Get node status', () => {
     it('Should return expected setting properties as a response', async () => {
       let response;
-      let error: unknown | undefined;
+      let error: AxiosError<any> | undefined;
 
       try {
         response = await axios.get(`${config.serviceUrl}/status`);
       } catch (e) {
-        error = e;
+        error = e as AxiosError<any>;
       }
 
       // Check errors
@@ -20,7 +20,6 @@ describe('/status', () => {
       // Check response
       expect(response?.status).to.be.equal(200);
       expect(response?.data).to.be.an('object');
-      expect(response?.data?.version).to.be.an('string');
       expect(response?.data?.maxKeyLength).to.be.an('number');
       expect(response?.data?.maxValueLength).to.be.an('number');
       expect(response?.data?.nodeId).to.be.an('string');
