@@ -1,11 +1,10 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
-import http from 'http';
+const http = require('http');
 
 // curl -s --unix-socket /var/run/docker.sock http://dummy/containers/json
 
-const requestListener = function (req, res) {
+const requestListener = function(req, res) {
   console.log(req.url);
-
 
   const options = {
     socketPath: '/var/run/docker.sock',

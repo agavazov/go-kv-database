@@ -87,7 +87,7 @@
 ## Criteria
 
 
-🔲 Clean code
+✅ Clean code
 
 🔲 Proper comments in code (quality, not quantity)
 

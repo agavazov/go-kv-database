@@ -1,6 +1,3 @@
-console.log('hello world');
-console.log('hello world');
+console.log('ok');
+// import http from 'http';
 
-const xx = async (in1: string, in2: number): Promise<number> => {
-  return 1;
-};
