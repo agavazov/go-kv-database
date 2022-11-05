@@ -22,7 +22,8 @@ describe('/healthcheck', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${envConfig.serviceUrl}/healthcheck`);
+        const url = `${envConfig.serviceUrl}/healthcheck`;
+        response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
       }

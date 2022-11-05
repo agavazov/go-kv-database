@@ -9,7 +9,8 @@ describe('/status', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${envConfig.serviceUrl}/status`);
+        const url = `${envConfig.serviceUrl}/status`;
+        response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
       }

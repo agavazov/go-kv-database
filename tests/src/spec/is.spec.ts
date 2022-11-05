@@ -11,7 +11,8 @@ describe('/is command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${envConfig.serviceUrl}/set?k=${testKey}&v=ok`);
+        const url = `${envConfig.serviceUrl}/set?k=${testKey}&v=ok`;
+        response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -30,7 +31,8 @@ describe('/is command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${envConfig.serviceUrl}/is?k=${testKey}`);
+        const url = `${envConfig.serviceUrl}/is?k=${testKey}`;
+        response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -49,7 +51,8 @@ describe('/is command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${envConfig.serviceUrl}/rm?k=${testKey}`);
+        const url = `${envConfig.serviceUrl}/rm?k=${testKey}`;
+        response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -63,12 +66,13 @@ describe('/is command', () => {
       expect(response?.data?.success).to.be.equal(true);
     });
 
-    it('Should respond with an error for [missing record] after try to check the same record again', async () => {
+    it('Should not allow to remove the same record again with [missing record] error', async () => {
       let response;
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${envConfig.serviceUrl}/is?k=${testKey}`);
+        const url = `${envConfig.serviceUrl}/is?k=${testKey}`;
+        response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -89,7 +93,8 @@ describe('/is command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${envConfig.serviceUrl}/is`);
+        const url = `${envConfig.serviceUrl}/is`;
+        response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -108,7 +113,8 @@ describe('/is command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${envConfig.serviceUrl}/is?k=`);
+        const url = `${envConfig.serviceUrl}/is?k=`;
+        response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -127,7 +133,8 @@ describe('/is command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${envConfig.serviceUrl}/is?k=${'x'.repeat(500)}`);
+        const url = `${envConfig.serviceUrl}/is?k=${'x'.repeat(500)}`;
+        response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
       }

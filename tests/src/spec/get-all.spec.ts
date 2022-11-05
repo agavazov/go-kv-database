@@ -9,7 +9,8 @@ describe('/getAll command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${envConfig.serviceUrl}/clear`);
+        const url = `${envConfig.serviceUrl}/clear`;
+        response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -37,7 +38,8 @@ describe('/getAll command', () => {
           let error: AxiosError<any> | undefined;
 
           try {
-            response = await axios.get(`${envConfig.serviceUrl}/set?k=${testItem.k}&v=${testItem.v}`);
+            const url = `${envConfig.serviceUrl}/set?k=${testItem.k}&v=${testItem.v}`
+            response = await axios.get(url);
           } catch (e) {
             error = e as AxiosError<any>;
           }
@@ -58,7 +60,8 @@ describe('/getAll command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${envConfig.serviceUrl}/getAll`);
+        const url = `${envConfig.serviceUrl}/getAll`;
+        response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
       }

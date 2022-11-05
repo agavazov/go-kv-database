@@ -41,8 +41,8 @@ class Build {
 
     if (fs.lstatSync(src).isDirectory()) {
       fs.mkdirSync(dest, { recursive: true });
-      fs.readdirSync(src).forEach(childItemName => {
-        this.copyRecursive(path.join(src, childItemName), path.join(dest, childItemName), allowedExt);
+      fs.readdirSync(src).forEach(childName => {
+        this.copyRecursive(path.join(src, childName), path.join(dest, childName), allowedExt);
       });
     } else {
       if (allowedExt.length > 0) {

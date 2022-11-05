@@ -1,12 +1,8 @@
 import { DockerConnect, Event } from './lib/docker-connect';
 import { envConfig } from './lib/env-config';
 
-// Create TCP load balancer
-(async () => {
-  // Connect to docker
-  const connector = new DockerConnect(envConfig.dockerApiLocation);
-
-  // Handle events
+// Docker event handler
+function dockerEventHandler(connector: DockerConnect) {
   connector.connect().catch(err => {
     console.error(`[!] There was a problem connecting to docker: ${err.message}`);
     process.exit(1);
@@ -28,6 +24,15 @@ import { envConfig } from './lib/env-config';
   connector.on(Event.ContainerDisconnect, (container) => {
     console.log(`[-] A container left [${JSON.stringify(container)}].`);
   });
+}
+
+// Create TCP load balancer
+(async () => {
+  // Connect to docker
+  const connector = new DockerConnect(envConfig.dockerApiLocation);
+
+  // Simple event handler showing console messages
+  dockerEventHandler(connector);
 
   // Create TCP load balancer
   // @todo do the magic
