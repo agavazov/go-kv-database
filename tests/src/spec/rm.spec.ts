@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
-import { config } from '../lib/config';
+import { envConfig } from '../lib/env-config';
 
 describe('/rm command', () => {
   describe('Successful record remove', () => {
@@ -11,7 +11,7 @@ describe('/rm command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/set?k=${testKey}&v=ok`);
+        response = await axios.get(`${envConfig.serviceUrl}/set?k=${testKey}&v=ok`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -30,7 +30,7 @@ describe('/rm command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/rm?k=${testKey}`);
+        response = await axios.get(`${envConfig.serviceUrl}/rm?k=${testKey}`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -49,7 +49,7 @@ describe('/rm command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/rm?k=${testKey}`);
+        response = await axios.get(`${envConfig.serviceUrl}/rm?k=${testKey}`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -70,7 +70,7 @@ describe('/rm command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/rm`);
+        response = await axios.get(`${envConfig.serviceUrl}/rm`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -89,7 +89,7 @@ describe('/rm command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/rm?k=`);
+        response = await axios.get(`${envConfig.serviceUrl}/rm?k=`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -108,7 +108,7 @@ describe('/rm command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/rm?k=${'x'.repeat(500)}`);
+        response = await axios.get(`${envConfig.serviceUrl}/rm?k=${'x'.repeat(500)}`);
       } catch (e) {
         error = e as AxiosError<any>;
       }

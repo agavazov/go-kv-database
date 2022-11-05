@@ -12,6 +12,8 @@ services:
       - ./load-balancer:/app
     working_dir: /app
     command: ["node", "/app/proxy.js"]
+    networks:
+      - db-nodes
 
   database:
     build: ./database-poc

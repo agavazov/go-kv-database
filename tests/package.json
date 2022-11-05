@@ -10,7 +10,7 @@
     "test:dev": "mocha --require ts-node/register -r dotenv/config src/wrapper.ts --bail",
     "stress": "node -r dotenv/config dist/stress",
     "stress:dev": "ts-node -r dotenv/config src/stress.ts",
-    "build": "tsc -p tsconfig.json"
+    "build": "ts-node build.ts && tsc -p tsconfig.json"
   },
   "dependencies": {
     "@types/chai": "^4.3.3",

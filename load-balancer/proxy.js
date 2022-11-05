@@ -19,7 +19,13 @@ const requestListener = function(req, res) {
     // res2.on('data', data => console.log(data));
     // res.end('hello world');
     // res2.on('data', data => res.end(data));
-    res2.on('data', data => res.end(JSON.stringify(JSON.parse(data), null, 2)));
+    let response = '';
+    res2.on('data', data => response += data);
+
+    res2.on('end', () => {
+      res.end(JSON.stringify(JSON.parse(response), null, 2));
+    });
+
     res2.on('error', data => console.error(data));
   };
 

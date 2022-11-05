@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
-import { config } from '../lib/config';
+import { envConfig } from '../lib/env-config';
 
 describe('/set command', () => {
   describe('Successful record set', () => {
@@ -9,7 +9,7 @@ describe('/set command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/set?k=test:set:2&v=`);
+        response = await axios.get(`${envConfig.serviceUrl}/set?k=test:set:2&v=`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -28,7 +28,7 @@ describe('/set command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/set?k=test:set:3&v=ok`);
+        response = await axios.get(`${envConfig.serviceUrl}/set?k=test:set:3&v=ok`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -52,7 +52,7 @@ describe('/set command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/set?k=${testKey}&v=${testValue}`);
+        response = await axios.get(`${envConfig.serviceUrl}/set?k=${testKey}&v=${testValue}`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -71,7 +71,7 @@ describe('/set command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/get?k=${testKey}`);
+        response = await axios.get(`${envConfig.serviceUrl}/get?k=${testKey}`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -92,7 +92,7 @@ describe('/set command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/set`);
+        response = await axios.get(`${envConfig.serviceUrl}/set`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -111,7 +111,7 @@ describe('/set command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/set?k=`);
+        response = await axios.get(`${envConfig.serviceUrl}/set?k=`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -130,7 +130,7 @@ describe('/set command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/set?k=${'x'.repeat(500)}`);
+        response = await axios.get(`${envConfig.serviceUrl}/set?k=${'x'.repeat(500)}`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -149,7 +149,7 @@ describe('/set command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/set?k=test:set`);
+        response = await axios.get(`${envConfig.serviceUrl}/set?k=test:set`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -168,7 +168,7 @@ describe('/set command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/set?k=test:set&v=${'x'.repeat(1000)}`);
+        response = await axios.get(`${envConfig.serviceUrl}/set?k=test:set&v=${'x'.repeat(1000)}`);
       } catch (e) {
         error = e as AxiosError<any>;
       }

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
-import { config } from '../lib/config';
+import { envConfig } from '../lib/env-config';
 
 describe('/clear command', () => {
   describe('Successful cleat all the records', () => {
@@ -11,7 +11,7 @@ describe('/clear command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/set?k=${testKey}&v=ok`);
+        response = await axios.get(`${envConfig.serviceUrl}/set?k=${testKey}&v=ok`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -30,7 +30,7 @@ describe('/clear command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/getAll`);
+        response = await axios.get(`${envConfig.serviceUrl}/getAll`);
       } catch (e) {
         error = e as AxiosError<any>;
       }
@@ -49,7 +49,7 @@ describe('/clear command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/clear`);
+        response = await axios.get(`${envConfig.serviceUrl}/clear`);
       } catch (e) {
         error = e as AxiosError<any>;
       }

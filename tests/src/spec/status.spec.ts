@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
-import { config } from '../lib/config';
+import { envConfig } from '../lib/env-config';
 
 describe('/status', () => {
   describe('Get node status', () => {
@@ -9,7 +9,7 @@ describe('/status', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        response = await axios.get(`${config.serviceUrl}/status`);
+        response = await axios.get(`${envConfig.serviceUrl}/status`);
       } catch (e) {
         error = e as AxiosError<any>;
       }

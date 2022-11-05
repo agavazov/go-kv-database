@@ -17,6 +17,10 @@
 
 
 # @todo
+- https://github.com/refinedev/refine -> виж .husky && .github && code covarage
+- https://codeclimate.com/github/pankod/refine
+- https://github.com/refinedev/refine/blob/next/package.json
+
 - circle ci
 - liniters
 - prittier
@@ -27,6 +31,7 @@
 - Run CI (for both branches) 1h 
 - Write GO
 - Add test cases for the mesh (join, warmup)
+- "// . " and "# . " to be commented
 
 # @tests 100k (cluster 50; per cluster: 20)
 - Avg request response: 1.05 ms (no docker + no load balancer; single node)
@@ -35,7 +40,8 @@
 - Avg request response: 1.52 ms (go; docker + load balancer; single node)
 
 ## Docs
-- Кажи че всичко е type module
+- Кажи че - трябва ни лоад балансър, защото типично nginx няма как да знае ако някоя инстанция е паузирана или загрява 
+  - ето и статусите Created, Running, Restarting, Exited, Paused, Dead
 - Кажи че TS е на strict ниво
 - Кажи че с джоиннването само към един нод, автоматично се джоинват всички нодове
 - Кажи че има и warmup queue за да не се изпускат неща
@@ -148,4 +154,4 @@ Will be good if there is an observer for automatic record deletion after a speci
 
 ### HaProxy configuration
 
-Right now the load balancer config is at bare minimum level
+Right now the load balancer env is at bare minimum level
