@@ -28,20 +28,28 @@ function dockerEventHandler(connector: DockerConnect) {
 function loadBalancerStart(connector: DockerConnect) {
   let containers: Container[] = [];
 
-  // Road ribbon index
+  // Road ribbon balancer
   let rri = 0;
   const rriGenerator = () => {
     rri = ++rri >= containers.length ? 0 : rri;
-    console.log('rrii', rri);
+    const container = containers[rri];
 
-    // return { host: containers[rri].ip, port: envConfig.groupPort };
-    return { host: containers[rri].ip, port: envConfig.groupPort };
+    if (typeof container?.meta?.hits === 'number') {
+      container.meta.hits++;
+    }
+
+    return { host: container.ip, port: envConfig.groupPort };
   };
 
   // When new container is joined to the network
   const filter = (item: Container) => item.group === envConfig.groupName;
 
-  connector.on(Event.ContainerConnect, () => {
+  connector.on(Event.ContainerConnect, (container) => {
+    // Create metadata to log the load balancer hits
+    container.meta = {
+      hits: 0
+    };
+
     containers = connector.containers.filter(filter);
   });
 
@@ -51,6 +59,16 @@ function loadBalancerStart(connector: DockerConnect) {
 
   // Start the TCP server and register
   tcpProxy(envConfig.servicePort, rriGenerator);
+
+  // Show hit report
+  let lastReport = '';
+  setInterval(() => {
+    const report = '[i] Hits -> ' + containers.map(c => `${c.ip} [${c?.meta?.hits}]`).join(' | ');
+    if (lastReport !== report) {
+      console.log(report);
+      lastReport = report;
+    }
+  }, 10000);
 }
 
 // Create TCP load balancer

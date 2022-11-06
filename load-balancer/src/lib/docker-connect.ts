@@ -35,7 +35,8 @@ export type Container = {
   id: string,
   group: string,
   ip: string,
-  state: ContainerState
+  state: ContainerState,
+  meta?: { [key: string]: any }
 }
 
 // Response of http://docker/info

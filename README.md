@@ -10,62 +10,10 @@
 `docker compose run tests npm run test`
 
 ### Attach new database node
-`docker compose run database`
+`docker compose run -d database`
 
 ### Stress tests
 `docker compose run tests npm run stress`
-
-
-# @todo
-- https://github.com/refinedev/refine -> виж .husky && .github && code covarage
-- https://codeclimate.com/github/pankod/refine
-- https://github.com/refinedev/refine/blob/next/package.json
-
-- circle ci
-- liniters
-- prittier
-- FULL MESH
-- PARTIAL MESH
-- STARSHAPE MESH
-- Docs 1h
-- Run CI (for both branches) 1h 
-- Write GO
-- Add test cases for the mesh (join, warmup)
-- "// . " and "# . " to be commented
-
-# @tests 100k (cluster 50; per cluster: 20)
-- Avg request response: 1.05 ms (no docker + no load balancer; single node)
-- Avg request response: 1.32 ms (nodeJS; docker + load balancer; single node)
-- Avg request response: 1.24 ms (nodeJS; docker + load balancer; 5 nodes; no mesh)
-- Avg request response: 1.52 ms (go; docker + load balancer; single node)
-
-## Docs
-- Кажи че - трябва ни лоад балансър, защото типично nginx няма как да знае ако някоя инстанция е паузирана или загрява 
-  - ето и статусите Created, Running, Restarting, Exited, Paused, Dead
-- Кажи че TS е на strict ниво
-- Кажи че с джоиннването само към един нод, автоматично се джоинват всички нодове
-- Кажи че има и warmup queue за да не се изпускат неща
-- !!! to add node ` docker compose run database` while the others are running
-- !!! tests docs add ` docker compose run tests npm run test`
-- !!! tests docs add ` docker compose run tests npm run stress`
-- !!! describe ` docker compose run tests npm run test:dev`
-- Add docs in load-balancer
-- Add docs for docker .env file
-- Use always JSON
-- Add column for possible reposes
-  - `data` is the data response
-  - `error` the format
-  - `success` the format
-  - `status` for the healthcheck
-- Describe each method
-- Add table of content
-- Explain about the health check from haproxy and docker
-- Explain the  integration-`tests` and add a link here
-- Simple docs for `database-poc` and add a link here
-- Explain `healthcheck`
-- Add better tests explanations
-- Add attach method (for the mesh, will be attached only after the status is `helath` and deatached if the status is `sick`)
-
 
 ![svg](/docs/mesh-state-1.svg)
 ![svg](/docs/mesh-state-2.svg)
