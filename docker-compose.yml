@@ -3,7 +3,7 @@ version: "3.8"
 services:
   # .
   proxy:
-    build: ./load-balancer
+    build: ./packages/load-balancer
     environment:
       DOCKER_API_LOCATION: "/var/run/docker.sock"
       SERVICE_PORT: 80
@@ -22,7 +22,7 @@ services:
 
   # .
   database:
-    build: ./database-poc
+    build: ./packages/database
     deploy:
       mode: replicated
       replicas: ${DATABASE_REPLICAS}
@@ -53,7 +53,7 @@ services:
   # command: ["npm", "run", "test"]
   # command: ["npm", "run", "stress"]
   tests:
-    build: ./tests
+    build: ./packages/tests
     environment:
       SERVICE_URL: "http://proxy:80"
     working_dir: /app

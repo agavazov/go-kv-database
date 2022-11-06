@@ -15,8 +15,8 @@
 ### Stress tests
 `docker compose run tests npm run stress`
 
-![svg](/docs/mesh-state-1.svg)
-![svg](/docs/mesh-state-2.svg)
+![svg](/docs/assets/mesh-state-1.svg)
+![svg](/docs/assets/mesh-state-2.svg)
 
 # Requirements
 
