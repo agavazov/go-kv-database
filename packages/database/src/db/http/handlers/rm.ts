@@ -1,4 +1,4 @@
-import { NotFoundError, RequestHandler } from '../../net/http';
+import { NotFoundError, RequestHandler } from '../../../net/http';
 import { validateKey } from '../validators';
 
 // . Remove record ?k=KEY [mutable]
@@ -21,10 +21,4 @@ export const rm: RequestHandler = async (db, params) => {
   return {
     success: true
   };
-
-  /*
-	// Request replicate to the other nodes
-	app.AsyncReplicateMeshRequest(c.Path(), c.QueryParams(), true)
-
-   */
 };

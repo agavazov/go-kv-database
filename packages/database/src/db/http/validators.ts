@@ -1,5 +1,5 @@
-import { IncomeParams, InvalidInputResponse } from '../net/http';
-import { dbMaxKeyLength, dbMaxValueLength } from '../storages/nkv-database';
+import { IncomeParams, InvalidInputResponse } from '../../net/http';
+import { dbMaxKeyLength, dbMaxValueLength } from '../nkv-database';
 
 // .
 export function validateKey(params: IncomeParams) {

@@ -1,51 +1,87 @@
-import * as handlers from './http/handlers';
+import * as dbHandlers from './db/http/handlerRegister';
+import { MemoryDb } from './db/memory-db';
 import { env } from './lib/env';
 import { Event, HttpServer } from './net/http';
-import { MemoryDb } from './storages/memory-db';
+import { Mesh } from './net/mesh';
 
-// Init DB & HTTP and combine them
-const db = new MemoryDb();
-const server = new HttpServer<MemoryDb>(db, env.servicePort);
+(async () => {
+  // Init DB & HTTP and combine them
+  const db = new MemoryDb();
 
-// Start the http listener
-server.connect();
+  const server = new HttpServer<MemoryDb>(db, env.port);
 
-// Print hello world
-server.on(Event.Connect, ({ port }) =>
-  console.log(`[i] DB is listening on http://127.0.0.1:${port}`));
+  // Start the http listener
+  server.connect();
 
-// Register handlers
-{
-  // Set record ?k=KEY&v=VALUE [mutable]
-  server.handle('/set', handlers.set);
+  // Print hello world when the server is ready
+  server.on(Event.Connect, ({ port }) => {
+    console.log(`[i] DB is listening on http://127.0.0.1:${port}`);
+  });
 
-  // Get record ?k=KEY&v=VALUE [immutable]
-  server.handle('/get', handlers.get);
+  // Register database http handlers
+  {
+    // Set record ?k=KEY&v=VALUE @mutable
+    server.handle('/set', dbHandlers.set);
 
-  // Remove record ?k=KEY [mutable]
-  server.handle('/rm', handlers.rm);
+    // Get record ?k=KEY&v=VALUE
+    server.handle('/get', dbHandlers.get);
 
-  // Clear all records [mutable]
-  server.handle('/clear', handlers.clear);
+    // Remove record ?k=KEY @mutable
+    server.handle('/rm', dbHandlers.rm);
 
-  // Is exists ?k=KEY [immutable]
-  server.handle('/is', handlers.is);
+    // Clear all records @mutable
+    server.handle('/clear', dbHandlers.clear);
 
-  // Get all keys [immutable]
-  server.handle('/getKeys', handlers.getKeys);
+    // Is exists ?k=KEY
+    server.handle('/is', dbHandlers.is);
 
-  // Get all values [immutable]
-  server.handle('/getValues', handlers.getValues);
+    // Get all keys
+    server.handle('/getKeys', dbHandlers.getKeys);
 
-  // Get all records [immutable]
-  server.handle('/getAll', handlers.getAll);
+    // Get all values
+    server.handle('/getValues', dbHandlers.getValues);
 
-  // Get server heath status (warmup or health) [immutable]
-  server.handle('/healthcheck', handlers.healthcheck);
+    // Get all records
+    server.handle('/getAll', dbHandlers.getAll);
 
-  // Get server settings [immutable]
-  server.handle('/status', handlers.status);
+    // Check is the server return http code 200
+    server.handle('/healthcheck', dbHandlers.healthcheck);
 
-  // Join node to this one and make mesh [mutable]
-  server.handle('/join', handlers.join);
-}
+    // Get server settings
+    server.handle('/status', dbHandlers.status);
+  }
+
+  // Extend server to work in a network mesh only if there is a mesh network to join
+  // Without interrupt current functionality
+  if (env.meshNetworkUrl) {
+    // Init the mesh class
+    const mesh = new Mesh({ host: env.hostname, port: env.port }, env.meshNetworkUrl);
+
+    // Wait until get the existing data from the other nodes and then start the current server
+    // server.pause = true;
+    // (await mesh.warmup<{ k: string, v: string }>()).forEach(r => db.set(r.k, r.v));
+    // server.pause = false;
+
+    // . return current nodes
+    server.handle('/ping', () => ({ nodes: mesh.nodes }));
+
+    // When some @mutable command is accessed, we need to replicate the request to the network
+    // . important do it async
+    server.on(Event.RequestEnd, ({ path, params, responseData }) => {
+      // Skip if the request is not changing anything to the database storage
+      if (['/set', '/rm', '/clear'].indexOf(path) === -1) {
+        return;
+      }
+
+      // If the handler returns errors, it means that the operation
+      // was not successful and will not be replicated
+      if (responseData?.error) {
+        return;
+      }
+
+      // .
+      mesh.replicate(path, params)
+        .catch(console.error);
+    });
+  }
+})();

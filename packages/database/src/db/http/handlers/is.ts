@@ -1,7 +1,7 @@
-import { NotFoundError, RequestHandler } from '../../net/http';
+import { NotFoundError, RequestHandler } from '../../../net/http';
 import { validateKey } from '../validators';
 
-// . Is exists ?k=KEY [immutable]
+// . Is exists ?k=KEY
 export const is: RequestHandler = async (db, params) => {
   // Validate input parameters
   validateKey(params);

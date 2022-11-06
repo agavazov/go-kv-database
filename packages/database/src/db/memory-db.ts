@@ -1,6 +1,5 @@
 import { NkvDatabase, StorageRecord } from './nkv-database';
 
-
 export class MemoryDb implements NkvDatabase {
   storage: StorageRecord = {};
 

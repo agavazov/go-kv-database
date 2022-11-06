@@ -2,6 +2,23 @@ import { env } from './lib/env';
 import { Container, DockerConnect, Event } from './net/docker-connect';
 import { tcpProxy } from './net/tcp-proxy';
 
+// Create TCP load balancer
+{
+  // Connect to docker
+  const connector = new DockerConnect(env.dockerApiLocation);
+
+  connector.connect().catch(err => {
+    console.error(`[!] There was a problem connecting to docker: ${err.message}`);
+    process.exit(1);
+  });
+
+  // Simple event handler showing console messages
+  dockerEventHandler(connector);
+
+  // Create TCP load balancer
+  loadBalancerStart(connector);
+}
+
 // . simplified function to
 // Docker event handler
 function dockerEventHandler(connector: DockerConnect) {
@@ -70,20 +87,3 @@ function loadBalancerStart(connector: DockerConnect) {
     }
   }, 10000);
 }
-
-// Create TCP load balancer
-(async () => {
-  // Connect to docker
-  const connector = new DockerConnect(env.dockerApiLocation);
-
-  connector.connect().catch(err => {
-    console.error(`[!] There was a problem connecting to docker: ${err.message}`);
-    process.exit(1);
-  });
-
-  // Simple event handler showing console messages
-  dockerEventHandler(connector);
-
-  // Create TCP load balancer
-  loadBalancerStart(connector);
-})();

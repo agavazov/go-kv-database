@@ -1,6 +1,44 @@
 import { IncomingMessage, Server, ServerResponse } from 'node:http';
 import url from 'url';
-import { NkvDatabase } from '../storages/nkv-database';
+import { NkvDatabase } from '../db/nkv-database';
+
+// .
+export type IncomeParams = NodeJS.Dict<string | string[]>
+
+// .
+export type RequestHandler = <DB extends NkvDatabase>(
+  db: DB, data: IncomeParams
+) => Promise<ResponseData> | ResponseData
+
+// . how the server structurize the request (this is used on @link{Event.RequestStart})
+export type ServerRequest = {
+  path: string,
+  params: IncomeParams,
+  res: ServerResponse
+}
+
+// .
+export type AfterRequest = Omit<ServerRequest, 'responseData'> & {
+  responseData: ResponseData
+};
+
+// .
+export type ResponseData = void | string | number | { [key: string]: any } | boolean | any;
+
+// .
+export class ResponseError extends Error {
+  code = 500;
+}
+
+// .
+export class NotFoundError extends ResponseError {
+  code = 404;
+}
+
+// .
+export class InvalidInputResponse extends ResponseError {
+  code = 400;
+}
 
 /**
  * Callback function that will be used when an event is executed
@@ -50,38 +88,6 @@ export enum Event {
   RequestEnd
 }
 
-// .
-export type IncomeParams = NodeJS.Dict<string | string[]>
-
-// .
-export type OutcomeData = void | string | number | object | boolean;
-
-// .
-export type RequestHandler = <DB extends NkvDatabase>(
-  db: DB, data: IncomeParams
-) => Promise<OutcomeData> | OutcomeData
-
-// . how the server structurize the request (this is used on @link{Event.RequestStart})
-export type ServerRequest = {
-  path: string,
-  params: IncomeParams,
-  res: ServerResponse
-}
-
-// .
-export class ResponseError extends Error {
-  code = 500;
-}
-
-// .
-export class NotFoundError extends ResponseError {
-  code = 404;
-}
-
-// .
-export class InvalidInputResponse extends ResponseError {
-  code = 400;
-}
 
 // . json get server
 export class HttpServer<DB extends NkvDatabase> {
@@ -93,6 +99,9 @@ export class HttpServer<DB extends NkvDatabase> {
 
   // . net server instance
   protected srv: Server;
+
+  // .
+  protected isPaused = false;
 
   // . default response http header
   protected readonly httpHeader = { 'Content-Type': 'text/json' };
@@ -128,8 +137,21 @@ export class HttpServer<DB extends NkvDatabase> {
     this.httpHandlers[path] = handler;
   }
 
+  // .
+  set pause(setPause: boolean) {
+    this.isPaused = setPause;
+  }
+
   // . Handle all requests from the web server
   protected async requestListener(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    // .
+    if (this.isPaused) {
+      res.writeHead(503, this.httpHeader);
+      res.end(JSON.stringify({ paused: true }));
+
+      return;
+    }
+
     // .
     const urlParse = url.parse(String(req?.url), true);
     const path = urlParse?.pathname || '/';
@@ -163,22 +185,22 @@ export class HttpServer<DB extends NkvDatabase> {
     }
 
     // .
-    this.emit(Event.RequestComplete, responseData);
+    this.emit(Event.RequestComplete, { path, params, res, responseData });
 
     // send the response
     res.writeHead(responseCode, this.httpHeader);
     res.end(JSON.stringify(responseData));
 
     // .
-    this.emit(Event.RequestEnd, responseData);
+    this.emit(Event.RequestEnd, { path, params, res, responseData });
   }
 
   // .on something happen
   on(event: Event.Connect, listener: (data: { [key: string]: unknown }) => void): void;
   on(event: Event.Disconnect, listener: (data: Error) => void): void;
   on(event: Event.RequestStart, listener: (data: ServerRequest) => void): void;
-  on(event: Event.RequestComplete, listener: (data: OutcomeData) => void): void;
-  on(event: Event.RequestEnd, listener: (data: OutcomeData) => void): void;
+  on(event: Event.RequestComplete, listener: (data: AfterRequest) => void): void;
+  on(event: Event.RequestEnd, listener: (data: AfterRequest) => void): void;
   on(event: Event, listener: EventListener): void {
     this.eventsQueue.push({ event, listener });
   }
@@ -187,8 +209,8 @@ export class HttpServer<DB extends NkvDatabase> {
   protected emit(event: Event.Connect, data: { [key: string]: unknown }): void;
   protected emit(event: Event.Disconnect, data: Error): void;
   protected emit(event: Event.RequestStart, data: ServerRequest): void;
-  protected emit(event: Event.RequestComplete, data: OutcomeData): void;
-  protected emit(event: Event.RequestEnd, data: OutcomeData): void;
+  protected emit(event: Event.RequestComplete, data: AfterRequest): void;
+  protected emit(event: Event.RequestEnd, data: AfterRequest): void;
   protected emit(event: Event, data: unknown): void {
     this.eventsQueue.forEach(eventRecord => {
       if (eventRecord.event === event) {

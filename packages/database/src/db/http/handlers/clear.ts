@@ -1,4 +1,4 @@
-import { RequestHandler } from '../../net/http';
+import { RequestHandler } from '../../../net/http';
 
 // . Clear all records [mutable]
 export const clear: RequestHandler = async (db) => {
@@ -10,10 +10,4 @@ export const clear: RequestHandler = async (db) => {
   return {
     success: true
   };
-
-  /*
-  // @todo
-	// Request replicate to the other nodes
-	app.AsyncReplicateMeshRequest(c.Path(), c.QueryParams(), true)
-  */
 };

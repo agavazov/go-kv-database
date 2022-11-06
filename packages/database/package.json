@@ -8,7 +8,12 @@
   "scripts": {
     "start": "node dist/server.js",
     "watch": "nodemon -r dotenv/config src/server.ts",
-    "build": "ts-node scripts/build.ts && tsc -p tsconfig.json"
+    "build": "ts-node scripts/build.ts && tsc -p tsconfig.json",
+    "mesh:srv1": "npx nodemon -r dotenv/config src/server.ts dotenv_config_path=./test-servers/.env.srv1",
+    "mesh:srv2": "npx nodemon -r dotenv/config src/server.ts dotenv_config_path=./test-servers/.env.srv2",
+    "mesh:srv3": "npx nodemon -r dotenv/config src/server.ts dotenv_config_path=./test-servers/.env.srv3",
+    "mesh:srv4": "npx nodemon -r dotenv/config src/server.ts dotenv_config_path=./test-servers/.env.srv4",
+    "mesh:srv5": "npx nodemon -r dotenv/config src/server.ts dotenv_config_path=./test-servers/.env.srv5"
   },
   "dependencies": {
     "dotenv": "^16.0.3"

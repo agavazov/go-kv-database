@@ -1,4 +1,4 @@
-import { RequestHandler } from '../../net/http';
+import { RequestHandler } from '../../../net/http';
 import { validateKey, validateValue } from '../validators';
 
 // . Set record ?k=KEY&v=VALUE [mutable]
@@ -18,11 +18,4 @@ export const set: RequestHandler = async (db, params) => {
   return {
     success: true
   };
-
-  /*
-  // @todo
-	// Request replicate to the other nodes
-	app.AsyncReplicateMeshRequest(c.Path(), c.QueryParams(), true)
-
-   */
 };
