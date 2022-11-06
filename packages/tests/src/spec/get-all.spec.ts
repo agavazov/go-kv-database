@@ -38,7 +38,7 @@ describe('/getAll command', () => {
           let error: AxiosError<any> | undefined;
 
           try {
-            const url = `${env.serviceUrl}/set?k=${testItem.k}&v=${testItem.v}`
+            const url = `${env.serviceUrl}/set?k=${testItem.k}&v=${testItem.v}`;
             response = await axios.get(url);
           } catch (e) {
             error = e as AxiosError<any>;

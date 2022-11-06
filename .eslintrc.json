@@ -112,7 +112,6 @@
     "no-underscore-dangle": "error",
     "no-multi-spaces": "error",
     "@typescript-eslint/ban-types": "error",
-    "@typescript-eslint/no-empty-function": "error",
-    "@typescript-eslint/explicit-module-boundary-types": "error"
+    "@typescript-eslint/no-empty-function": "error"
   }
 }

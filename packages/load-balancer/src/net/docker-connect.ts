@@ -3,16 +3,28 @@ import http from 'node:http';
 import https, { RequestOptions } from 'node:https';
 import { parse } from 'node:url';
 
-// .
+/**
+ * Callback function that will be used when an event is executed
+ */
 type EventListener = <T>(data: T | any) => void
 
-// .
+/**
+ * The structure of the event listeners.
+ * Each record must have information about which event it
+ * is listening for and the listener function which will be called
+ */
 type EventRecord = {
   event: Event,
   listener: EventListener
 }
 
-// Тhe events that can happen when communicating with docker
+/**
+ * The events that can occur when communicating with docker
+ *  - Connect: When a docker connection is established. This event will only happen once
+ *  - Disconnect: @todo
+ *  - ContainerConnect: @todo
+ *  - ContainerDisconnect:  @todo
+ */
 export enum Event {
   Connect,
   Disconnect,
@@ -79,10 +91,10 @@ export class DockerConnect {
   protected socketPath: string | undefined;
 
   // Event queue callbacks
-  private eventsQueue: EventRecord[] = [];
+  protected eventsQueue: EventRecord[] = [];
 
   // The minimal supported version of Docker
-  private minDockerVersion = 20;
+  protected readonly minDockerVersion = 20;
 
   // Docker observer can only be started once. Here we will set if this happened
   private isObserverStarted = false;
@@ -128,7 +140,7 @@ export class DockerConnect {
   }
 
   // .connect
-  public async connect(): Promise<void> {
+  async connect(): Promise<void> {
     const rs = await this.request<DockerResponseInfo>('/info');
     // Check the response
     if (typeof rs?.ServerVersion !== 'string') {
@@ -149,16 +161,16 @@ export class DockerConnect {
     this.runDockerObserver();
   }
 
-  public get containers(): Container[] {
+  get containers(): Container[] {
     return this.containersList;
   }
 
   // .on something happen
-  public on(event: Event.Connect, listener: (data: DockerResponseInfo) => void): void;
-  public on(event: Event.Disconnect, listener: (data: RequestError) => void): void;
-  public on(event: Event.ContainerConnect, listener: (data: Container) => void): void;
-  public on(event: Event.ContainerDisconnect, listener: (data: Container) => void): void;
-  public on(event: Event, listener: EventListener): void {
+  on(event: Event.Connect, listener: (data: DockerResponseInfo) => void): void;
+  on(event: Event.Disconnect, listener: (data: RequestError) => void): void;
+  on(event: Event.ContainerConnect, listener: (data: Container) => void): void;
+  on(event: Event.ContainerDisconnect, listener: (data: Container) => void): void;
+  on(event: Event, listener: EventListener): void {
     this.eventsQueue.push({ event, listener });
   }
 
@@ -182,7 +194,7 @@ export class DockerConnect {
 
   // .call docker by http request via socket or api
   // .expect only JSON response
-  public async request<T>(path: string): Promise<T> {
+  async request<T>(path: string): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       // .
       const options: RequestOptions = {

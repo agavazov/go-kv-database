@@ -4,7 +4,7 @@ import * as path from 'path';
 // Build config
 const src = path.join(__dirname, './src');
 const dest = path.join(__dirname, './dist');
-const allowedExt: string[] = [];
+const allowedExt: string[] = []; // .
 
 /**
  * Everything is compiled by tsc no extra help is needed

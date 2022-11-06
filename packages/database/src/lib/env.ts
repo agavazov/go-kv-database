@@ -3,5 +3,6 @@
  */
 export const env = {
   env: process.env.NODE_ENV || 'development',
-  servicePort: Number(process.env.SERVICE_PORT) || 80
+  servicePort: Number(process.env.SERVICE_PORT) || 80,
+  nodeId: process.env.NODE_ID || `Db_${process.env.HOSTNAME}`
 };

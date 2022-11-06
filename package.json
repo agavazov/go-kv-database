@@ -12,10 +12,11 @@
     "start-load-balancer": "npm --prefix ./packages/load-balancer run start",
     "build-load-balancer": "npm --prefix ./packages/load-balancer run build",
     "watch-load-balancer": "npm --prefix ./packages/load-balancer run watch",
+    "test": "npm --prefix ./packages/tests run test",
+    "build-tests": "npm --prefix ./packages/tests run build",
     "start": "concurrently \"npm:start-*\"",
     "build": "concurrently \"npm:build-*\"",
     "watch": "concurrently \"npm:watch-*\"",
-    "test": "npm --prefix ./packages/tests run test",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts,.js --fix",
     "postinstall": "lerna bootstrap && npm run build"

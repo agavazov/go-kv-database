@@ -1,18 +1,23 @@
-# KV database written in GO with 
+# KV database written in GO with
 
 ### Build the project
+
 `docker compose build`
 
 ### Start everything
+
 `docker compose up`
 
 ### Run all integration tests
+
 `docker compose run tests npm run test`
 
 ### Attach new database node
+
 `docker compose run -d database`
 
 ### Stress tests
+
 `docker compose run tests npm run stress`
 
 ![svg](/docs/assets/mesh-state-1.svg)
@@ -40,7 +45,6 @@
 
 ## Criteria
 
-
 ✅ Clean code
 
 🔲 Proper comments in code (quality, not quantity)
@@ -63,9 +67,10 @@
 
 ## Potential problems
 
-- Memory - Check the maximum dedicated memory, `NO_SWAP` param, no enough memory, etc.  
+- Memory - Check the maximum dedicated memory, `NO_SWAP` param, no enough memory, etc.
 
 ## Additional criteria
+
 - TDD - Test Driven Development
 - Containerisation - Everything is run under `Docker`
 
@@ -86,6 +91,10 @@
 | /join            | Join/invite the instance to the mesh              |
 
 ## What can be improved for next releases
+
+### Communication between the mesh
+
+getAll(), getKeys(), getValues() to be in stream
 
 ### Communication between the mesh
 

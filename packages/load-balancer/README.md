@@ -7,6 +7,6 @@ In this case it will listne for new instances.....
 - health check
 - round ribbon
 
-  -v /var/run/docker.sock:/var/run/docker.sock \ 
+  -v /var/run/docker.sock:/var/run/docker.sock \
 
 curl -s --unix-socket /var/run/docker.sock http://dummy/containers/json
