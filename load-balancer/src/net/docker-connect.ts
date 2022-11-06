@@ -219,10 +219,6 @@ export class DockerConnect {
           } catch (e) {
             reject(new InvalidResponseError('Invalid JSON response'));
           }
-
-          // @todo check this one
-          // Close the connection
-          request.destroy();
         });
       });
 
@@ -230,10 +226,6 @@ export class DockerConnect {
       request.on('error', err => {
         // Reject with request error
         reject(new RequestError(err.message));
-
-        // @todo check this one
-        // Close the connection
-        request.destroy();
       });
 
       // Nothing else to set, run the request

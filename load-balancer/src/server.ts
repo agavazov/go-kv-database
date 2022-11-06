@@ -1,6 +1,6 @@
-import { Container, DockerConnect, Event } from './lib/docker-connect';
 import { envConfig } from './lib/env-config';
-import { tcpProxy } from './lib/tcp-proxy';
+import { Container, DockerConnect, Event } from './net/docker-connect';
+import { tcpProxy } from './net/tcp-proxy';
 
 // . simplified function to
 // Docker event handler
