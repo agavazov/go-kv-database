@@ -1,32 +1,47 @@
 version: "3.8"
 
 services:
-  load-balancer:
+  proxy:
     build: ./load-balancer
+    environment:
+      DOCKER_API_LOCATION: "/var/run/docker.sock"
+      SERVICE_PORT: 80
+      GROUP_PORT: 80
+      GROUP_NAME: "database"
     ports:
-      - 80:80
+      - 8080:80
     security_opt:
       - no-new-privileges:true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./load-balancer:/app
+      - ./load-balancer:/app # @todo remove me
     working_dir: /app
-    command: ["node", "/app/proxy.js"]
+    # command: ["npm", "run", "start"] # @todo
+    command: [ "npm", "run", "watch" ]
     networks:
       - db-nodes
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 0
+      net.ipv4.conf.all.forwarding: 1
+      net.ipv6.conf.all.forwarding: 1
+      #net.core.somaxconn: 1024
+      #net.ipv4.tcp_syncookies: 0
+      #net.ipv4.tcp_keepalive_time: 1 # Keepalive routines wait for N sec before sending the first keepalive probe
+      #net.ipv4.tcp_keepalive_intvl: 1 # Resend the prob every N sec
+      #net.ipv4.tcp_keepalive_probes: 1 # If no ACK response is received for N consecutive times, the connection is marked as broken
+
 
   database:
     build: ./database-poc
     deploy:
       mode: replicated
-      # replicas: ${DATABASE_REPLICAS}
-      replicas: 4
+      replicas: ${DATABASE_REPLICAS}
     environment:
       SERVICE_PORT: 80 # Service HTTP port
       # MESH_NETWORK_URL: "http://proxy:80" # The url to join to the mesh (usually for production is the loadBalancer URL)
       LOG_LEVEL: 0 # Log level 0 to 4 (check service documentation)
     working_dir: /app
-    command: npm run start
+    command: [ "npm", "run", "start" ]
     healthcheck:
       test: "wget --no-verbose --tries=1 --spider http://127.0.0.1/healthcheck || exit 1"
       interval: 5s
@@ -45,12 +60,10 @@ services:
   tests:
     build: ./tests
     environment:
-      SERVICE_URL: "http://proxy"
+      SERVICE_URL: "http://proxy:80"
     working_dir: /app
-    # command: "npm run test"
-    # command: "npm run stress"
-    #    depends_on:
-    #      - proxy
+    # command: ["npm", "run", "test"]
+    # command: ["npm", "run", "stress"]
     networks:
       - db-nodes
 

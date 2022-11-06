@@ -87,7 +87,7 @@ export class DockerConnect {
   private isObserverStarted = false;
 
   // .
-  protected containers: Container[] = [];
+  protected containersList: Container[] = [];
 
   // .http or socket file
   constructor(
@@ -148,6 +148,10 @@ export class DockerConnect {
     this.runDockerObserver();
   }
 
+  public get containers(): Container[] {
+    return this.containersList;
+  }
+
   // .on something happen
   public on(event: Event.Connect, listener: (data: DockerResponseInfo) => void): void;
   public on(event: Event.Disconnect, listener: (data: RequestError) => void): void;
@@ -201,6 +205,8 @@ export class DockerConnect {
         // When request timeout reached
         res.on('timeout', () => {
           reject(new RequestError(`Request timeout of [${this.requestTimeoutMs}]ms reached`));
+
+          // Close the connection
           request.destroy();
         });
 
@@ -212,11 +218,22 @@ export class DockerConnect {
           } catch (e) {
             reject(new InvalidResponseError('Invalid JSON response'));
           }
+
+          // @todo check this one
+          // Close the connection
+          request.destroy();
         });
       });
 
       // Global request error check
-      request.on('error', err => reject(new RequestError(err.message)));
+      request.on('error', err => {
+        // Reject with request error
+        reject(new RequestError(err.message));
+
+        // @todo check this one
+        // Close the connection
+        request.destroy();
+      });
 
       // Nothing else to set, run the request
       request.end();
@@ -264,10 +281,10 @@ export class DockerConnect {
           // Compare for added & removed records
           const connected = rs.filter(r =>
             r.state === ContainerState.Running // Check only those which are running
-            && !this.containers.find(c => c.id === r.id) // And not are presented in current list
+            && !this.containersList.find(c => c.id === r.id) // Not presented in current list
           );
 
-          const disconnected = this.containers.filter(c =>
+          const disconnected = this.containersList.filter(c =>
             !rs.find(r => // Disconnected are all non-healthy or missing in from the current list
               r.state === ContainerState.Running // Check only those which are running
               && r.id === c.id
@@ -275,8 +292,8 @@ export class DockerConnect {
           );
 
           // Assign the changes
-          this.containers = [...this.containers, ...connected];
-          this.containers = this.containers.filter(item => !disconnected.includes(item));
+          this.containersList = [...this.containersList, ...connected];
+          this.containersList = this.containersList.filter(item => !disconnected.includes(item));
 
           // Trigger events
           connected.forEach(container => {

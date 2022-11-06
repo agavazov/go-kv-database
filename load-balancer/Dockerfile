@@ -2,6 +2,10 @@ FROM node:18
 
 WORKDIR /app
 
-RUN apt update
-RUN apt install -y telnet curl wget iputils-ping nano
-RUN npm install -g nodemon
+COPY package.json .
+
+RUN npm install --quiet
+
+COPY . .
+
+RUN npm run build

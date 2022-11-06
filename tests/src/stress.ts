@@ -1,20 +1,15 @@
 import axios from 'axios';
+import { envConfig } from './lib/env-config';
 
 // Configuration
-const requestsAmount = Number(process.env.STRESS_AMOUNT) || 100000;
-const clusters = Number(process.env.STRESS_CLUSTERS) || 20;
-const workersPerCluster = Number(process.env.STERSS_WORKERS) || 10;
-const serviceUrl = process.env.SERVICE_URL;
+const serviceUrl = envConfig.serviceUrl;
+const requestsAmount = envConfig.stressAmount;
+const clusters = envConfig.stressClusters;
+const workersPerCluster = envConfig.stressWorkers;
 
 // Preparation
 let leftAmount = requestsAmount;
-const report: {
-  errors: number
-  success: number
-  total: number
-  start: Date
-  end: Date | null
-} = {
+const report: { errors: number, success: number, total: number, start: Date, end: Date | null } = {
   errors: 0,
   success: 0,
   total: requestsAmount,
@@ -28,14 +23,14 @@ const worker = async () => {
     try {
       await axios.get(`${serviceUrl}/set?k=stress:${leftAmount}&v=value:${leftAmount}`);
       report.success++;
-    } catch (e) {
+    } catch (e: any) {
       report.errors++;
     }
 
     leftAmount--;
 
     if (leftAmount % 1000 === 0) {
-      console.log(`Left requests: ${leftAmount}`);
+      console.log(`[<] ${leftAmount} / [!] ${report.errors} / [^] ${report.success}`);
     }
 
     if (leftAmount <= 0) {
@@ -73,6 +68,7 @@ const showReport = () => {
   console.log(` - Clusters: ${clusters}`);
   console.log(` - Workers per cluster: ${workersPerCluster}`);
   console.log('\n==================\n');
+  console.log('[<] Left Requests / [!] Errors / [^] Success\n');
 
   for (let i = 1; i <= clusters; i++) {
     stress().catch(console.error);

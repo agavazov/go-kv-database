@@ -3,5 +3,8 @@
  */
 export const envConfig = {
   env: process.env.NODE_ENV || 'development',
-  serviceUrl: process.env.SERVICE_URL
+  serviceUrl: process.env.SERVICE_URL,
+  stressAmount: Number(process.env.STRESS_AMOUNT) || 100000,
+  stressClusters: Number(process.env.STRESS_CLUSTERS) || 20,
+  stressWorkers: Number(process.env.STERSS_WORKERS) || 10
 };
