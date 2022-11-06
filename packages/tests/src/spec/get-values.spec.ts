@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
-import { envConfig } from '../lib/env-config';
+import { env } from '../lib/env';
 
 describe('/getValues command', () => {
   describe('Successful clear all the records', () => {
@@ -9,7 +9,7 @@ describe('/getValues command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/clear`;
+        const url = `${env.serviceUrl}/clear`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
@@ -38,7 +38,7 @@ describe('/getValues command', () => {
           let error: AxiosError<any> | undefined;
 
           try {
-            const url = `${envConfig.serviceUrl}/set?k=${testItem.k}&v=${testItem.v}`;
+            const url = `${env.serviceUrl}/set?k=${testItem.k}&v=${testItem.v}`;
             response = await axios.get(url);
           } catch (e) {
             error = e as AxiosError<any>;
@@ -60,7 +60,7 @@ describe('/getValues command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/getValues`;
+        const url = `${env.serviceUrl}/getValues`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;

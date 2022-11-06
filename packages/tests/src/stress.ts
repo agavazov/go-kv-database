@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { envConfig } from './lib/env-config';
+import { env } from './lib/env';
 
 // Configuration
-const serviceUrl = envConfig.serviceUrl;
-const requestsAmount = envConfig.stressAmount;
-const clusters = envConfig.stressClusters;
-const workersPerCluster = envConfig.stressWorkers;
+const serviceUrl = env.serviceUrl;
+const requestsAmount = env.stressAmount;
+const clusters = env.stressClusters;
+const workersPerCluster = env.stressWorkers;
 
 // Preparation
 let leftAmount = requestsAmount;

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
-import { envConfig } from '../lib/env-config';
+import { env } from '../lib/env';
 
 describe('/get command', () => {
   describe('Successful record get', () => {
@@ -12,7 +12,7 @@ describe('/get command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/set?k=${testKey}&v=${testValue}`;
+        const url = `${env.serviceUrl}/set?k=${testKey}&v=${testValue}`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
@@ -32,7 +32,7 @@ describe('/get command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/get?k=${testKey}`;
+        const url = `${env.serviceUrl}/get?k=${testKey}`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
@@ -54,7 +54,7 @@ describe('/get command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/get?k=test:get:missing`;
+        const url = `${env.serviceUrl}/get?k=test:get:missing`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
@@ -76,7 +76,7 @@ describe('/get command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/get`;
+        const url = `${env.serviceUrl}/get`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
@@ -96,7 +96,7 @@ describe('/get command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/get?k=`;
+        const url = `${env.serviceUrl}/get?k=`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
@@ -116,7 +116,7 @@ describe('/get command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/get?k=${'x'.repeat(500)}`;
+        const url = `${env.serviceUrl}/get?k=${'x'.repeat(500)}`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;

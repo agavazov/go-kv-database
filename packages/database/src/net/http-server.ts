@@ -7,7 +7,7 @@ export enum Event {
 }
 
 // . json get server
-export class Server {
+export class HttpServer {
   constructor(port = 80, host = '0.0.0.0') {
     //
   }

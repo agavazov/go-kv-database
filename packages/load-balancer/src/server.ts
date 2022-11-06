@@ -1,4 +1,4 @@
-import { envConfig } from './lib/env-config';
+import { env } from './lib/env';
 import { Container, DockerConnect, Event } from './net/docker-connect';
 import { tcpProxy } from './net/tcp-proxy';
 
@@ -38,11 +38,11 @@ function loadBalancerStart(connector: DockerConnect) {
       container.meta.hits++;
     }
 
-    return { host: container.ip, port: envConfig.groupPort };
+    return { host: container.ip, port: env.groupPort };
   };
 
   // When new container is joined to the network
-  const filter = (item: Container) => item.group === envConfig.groupName;
+  const filter = (item: Container) => item.group === env.groupName;
 
   connector.on(Event.ContainerConnect, (container) => {
     // Create metadata to log the load balancer hits
@@ -58,7 +58,7 @@ function loadBalancerStart(connector: DockerConnect) {
   });
 
   // Start the TCP server and register
-  tcpProxy(envConfig.servicePort, rriGenerator);
+  tcpProxy(env.servicePort, rriGenerator);
 
   // Show hit report
   let lastReport = '';
@@ -74,7 +74,7 @@ function loadBalancerStart(connector: DockerConnect) {
 // Create TCP load balancer
 (async () => {
   // Connect to docker
-  const connector = new DockerConnect(envConfig.dockerApiLocation);
+  const connector = new DockerConnect(env.dockerApiLocation);
 
   connector.connect().catch(err => {
     console.error(`[!] There was a problem connecting to docker: ${err.message}`);

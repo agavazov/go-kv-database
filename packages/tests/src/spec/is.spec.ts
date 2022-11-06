@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
-import { envConfig } from '../lib/env-config';
+import { env } from '../lib/env';
 
 describe('/is command', () => {
   describe('Successful record exist check', () => {
@@ -11,7 +11,7 @@ describe('/is command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/set?k=${testKey}&v=ok`;
+        const url = `${env.serviceUrl}/set?k=${testKey}&v=ok`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
@@ -31,7 +31,7 @@ describe('/is command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/is?k=${testKey}`;
+        const url = `${env.serviceUrl}/is?k=${testKey}`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
@@ -51,7 +51,7 @@ describe('/is command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/rm?k=${testKey}`;
+        const url = `${env.serviceUrl}/rm?k=${testKey}`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
@@ -71,7 +71,7 @@ describe('/is command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/is?k=${testKey}`;
+        const url = `${env.serviceUrl}/is?k=${testKey}`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
@@ -93,7 +93,7 @@ describe('/is command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/is`;
+        const url = `${env.serviceUrl}/is`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
@@ -113,7 +113,7 @@ describe('/is command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/is?k=`;
+        const url = `${env.serviceUrl}/is?k=`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
@@ -133,7 +133,7 @@ describe('/is command', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/is?k=${'x'.repeat(500)}`;
+        const url = `${env.serviceUrl}/is?k=${'x'.repeat(500)}`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
-import { envConfig } from '../lib/env-config';
+import { env } from '../lib/env';
 
 describe('/status', () => {
   describe('Get node status', () => {
@@ -9,7 +9,7 @@ describe('/status', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/status`;
+        const url = `${env.serviceUrl}/status`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;

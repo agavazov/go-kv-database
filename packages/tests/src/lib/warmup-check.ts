@@ -1,5 +1,5 @@
 import axios, { AxiosError, HttpStatusCode } from 'axios';
-import { envConfig } from './env-config';
+import { env } from './env';
 
 // Warmup (unavailable) HTTP status code
 const waitingStatusCode = HttpStatusCode.ServiceUnavailable; // 503
@@ -12,7 +12,7 @@ export const warmupCheck = async (tries = 15): Promise<boolean> => {
     let error: AxiosError<any> | undefined;
 
     try {
-      response = await axios.get(`${envConfig.serviceUrl}/`);
+      response = await axios.get(`${env.serviceUrl}/`);
     } catch (e) {
       error = e as AxiosError<any>;
     }

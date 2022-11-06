@@ -1,7 +1,7 @@
 /**
  * Centralised object with all environment variables used in the project
  */
-export const envConfig = {
+export const env = {
   env: process.env.NODE_ENV || 'development',
   serviceUrl: process.env.SERVICE_URL,
   stressAmount: Number(process.env.STRESS_AMOUNT) || 100000,

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { expect } from 'chai';
-import { envConfig } from '../lib/env-config';
+import { env } from '../lib/env';
 import { warmupCheck } from '../lib/warmup-check';
 
 describe('/healthcheck', () => {
@@ -22,7 +22,7 @@ describe('/healthcheck', () => {
       let error: AxiosError<any> | undefined;
 
       try {
-        const url = `${envConfig.serviceUrl}/healthcheck`;
+        const url = `${env.serviceUrl}/healthcheck`;
         response = await axios.get(url);
       } catch (e) {
         error = e as AxiosError<any>;
