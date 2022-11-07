@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "watch": "nodemon -r dotenv/config src/server.ts",
+    "start:dev": "ts-node -r dotenv/config src/server.ts",
     "build": "ts-node scripts/build.ts && tsc -p tsconfig.json"
   },
   "dependencies": {

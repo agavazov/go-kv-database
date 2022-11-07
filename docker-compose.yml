@@ -16,7 +16,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     working_dir: /app
-    command: [ "npm", "run", "start" ]
+    # command: [ "npm", "run", "start" ] # @todo check why 1st connection fails on normal start
+    command: [ "npm", "run", "start:dev" ]
+    restart: unless-stopped
     networks:
       - db-nodes
 
@@ -27,9 +29,8 @@ services:
       mode: replicated
       replicas: ${DATABASE_REPLICAS}
     environment:
-      SERVICE_PORT: 80 # Service HTTP port
-      # MESH_NETWORK_URL: "http://proxy:80" # The url to join to the mesh (usually for production is the loadBalancer URL)
-      LOG_LEVEL: 0 # Log level 0 to 4 (check service documentation)
+      PORT: 80
+      MESH_NETWORK_URL: "http://proxy"
     working_dir: /app
     command: [ "npm", "run", "start" ]
     healthcheck:
