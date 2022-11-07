@@ -55,19 +55,24 @@ import { Mesh } from './net/mesh';
   // Without interrupt current functionality
   if (env.meshNetworkUrl) {
     // Init the mesh class
-    const mesh = new Mesh({ host: env.hostname, port: env.port }, env.meshNetworkUrl);
-
-    // Wait until get the existing data from the other nodes and then start the current server
-    // server.pause = true;
-    // (await mesh.warmup<{ k: string, v: string }>()).forEach(r => db.set(r.k, r.v));
-    // server.pause = false;
+    const mesh = new Mesh({
+      host: env.hostname,
+      port: env.port,
+      isDown: false
+    }, env.meshNetworkUrl);
 
     // . return current nodes
-    server.handle('/ping', () => ({ nodes: mesh.nodes }));
+    server.handle('/ping', (db, params) => {
+      // Check for passed nodes from the others
+      mesh.unSerialize(String(params?.nodes))?.forEach((n: any) => mesh.join(n, 'passed'));
+
+      // Return current nodes to the others
+      return { nodes: mesh.nodes };
+    });
 
     // When some @mutable command is accessed, we need to replicate the request to the network
     // . important do it async
-    server.on(Event.RequestEnd, ({ path, params, responseData }) => {
+    server.on(Event.RequestComplete, ({ path, params, responseData }) => {
       // Skip if the request is not changing anything to the database storage
       if (['/set', '/rm', '/clear'].indexOf(path) === -1) {
         return;

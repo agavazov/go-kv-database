@@ -7,85 +7,108 @@ import { IncomeParams } from './http';
 export type MeshNode = {
   host: string,
   port: number,
+  isDown: boolean,
+  source?: string
 }
 
 export class Mesh {
+  protected nodesList: MeshNode[] = [];
+
   // Maximum waiting time for each request
   protected requestTimeoutMs = 1000;
 
-  constructor(currentNode: MeshNode, protected meshNetworkUrl: string) {
-  }
+  // .
+  protected pingInterval = 1500;
 
-  async warmup<R>(): Promise<R[]> {
-    // Reducing the chance of collision on initial launch all instances (without exception)
-    // are started at the same time and ready at the same time
-    await this.sleep(Math.random() * 1000);
+  // .
+  constructor(protected currentNode: MeshNode, protected meshNetworkUrl: string) {
+    this.join(currentNode, 'init');
 
-    // Try to find new nodes hidden behind the load balancer
-    // When there is a load balancer in front of auto scalling group
-    for (let i = 1; i <= 10; i++) {
-      try {
-        console.log('this.meshNetworkUrl', this.meshNetworkUrl);
-        const rs = await this.request(`${this.meshNetworkUrl}/status`);
-        console.log('warmup.rs', rs);
-      } catch (e) {
-        //
-      }
-      await this.sleep(Math.random() * 250 + 250);
-    }
-
-    return []; // @todo add records here
+    setInterval(() => this.ping(), this.pingInterval);
+    this.ping();
   }
 
   get nodes(): MeshNode[] {
-    return [];
+    return this.nodesList;
   }
 
+  // .
   async replicate(path: string, params: IncomeParams): Promise<void> {
-    console.log('mesh.replicate', { path, params });
+    // @todo
   }
 
+  // .
+  join(node: MeshNode, source = '') {
+    // Check node object structure
+    if (this.isValid(node)) {
+      return;
+    }
+
+    // Skip non working nodes
+    if (node.isDown) {
+      return;
+    }
+
+    // SKip non unique nodes
+    if (this.nodes.find(n => n.host === node.host && n.port === node.port)) {
+      return;
+    }
+
+    // Append to current list
+    node.source = source;
+    this.nodes.push(node);
+
+    // Show console info
+    console.log(`[+] New node join [${node.host}:${node.port}] from [${node.source}]`);
+  }
+
+  // . validate if the node data pass & is valid
+  isValid(nodeData: any): boolean {
+    return typeof nodeData === 'object'
+      && typeof nodeData?.host === 'string'
+      && typeof nodeData?.isDown === 'boolean'
+      && typeof nodeData?.port === 'number'
+      && Number(typeof nodeData.port) > 1;
+  }
+
+  // .
+  serialize(nodes: MeshNode[]): string {
+    return nodes.map(n => `${n.host}:${n.port}`).join('|');
+  }
+
+  // .
+  unSerialize(str: string): MeshNode[] {
+    return str.split(/\|/g).map(n => {
+      const [host, port] = n.split(/:/g);
+
+      return { host, port: Number(port), isDown: false };
+    });
+  }
+
+  // .
   ping() {
-    /*
+    // Collect all nodes which are working to check them and get their working nodes
+    const workingNodes = this.nodes.filter(n => !n.isDown);
 
-      // . Observe
-      setInterval(() => mesh2.ping(
-        nodes,
-        (failIndex) => nodes.splice(failIndex, 1),
-        (newNode) => nodes.push(newNode)
-      ), 500);
+    // Collect the mesh nodes and mesh url and ping them
+    const pingUrls: (string | MeshNode)[] = [this.meshNetworkUrl, ...workingNodes];
 
-
-    //////////////
-
-    // .
-    export const ping = (
-      nodes: MeshNode[],
-      onFail: (key: number, node: MeshNode) => void,
-      onNewNode: (node: MeshNode) => void
-    ): void => {
-      //
-
-
-      // unSerializeNodes(String(params?.nodes)).forEach(newNode => {
-      //   if (!nodes.find(item => item.host === newNode.host)) {
-      //     nodes.push(newNode);
-      //   }
-      // });
-
-      // // Connect to the other nodes
-      // server.on(Event.Connect, () => replicate(nodes, '/join', {
-      //   nodes: serializeNodes(nodes)
-      // }));
-
-    };
-
-     */
+    // Ping all urls in parallel (except current node)
+    pingUrls.filter(n => n !== this.currentNode).forEach(node => {
+      const isUrl = typeof node === 'string';
+      const url = isUrl ? node : `http://${node.host}:${node.port}`;
+      this.request<{ nodes: MeshNode[] }>(`${url}/ping`, { nodes: this.serialize(workingNodes) })
+        // Join all nodes from the response
+        .then(rs => rs?.nodes?.forEach(node => this.join(node, 'ping')))
+        .catch(e => {
+          // console.log('ERRRR', e.message);
+        });
+    });
   }
 
-  async request<T>(url: string, params: IncomeParams = {}): Promise<T> {
-    const urlParams = {}; // IncomeParams @todo
-    const requestUrl = `${url}?${(new URLSearchParams(urlParams)).toString()}`;
+  // .
+  async request<T>(url: string, params: { [key: string]: string } = {}): Promise<T> {
+    const requestUrl = `${url}?${(new URLSearchParams(params)).toString()}`;
     const urlParse = parse(requestUrl);
 
     return new Promise<T>((resolve, reject) => {
@@ -128,9 +151,5 @@ export class Mesh {
       // Nothing else to set, run the request
       request.end();
     });
-  }
-
-  protected async sleep(ms: number): Promise<void> {
-    return new Promise(r => setTimeout(r, ms));
   }
 }

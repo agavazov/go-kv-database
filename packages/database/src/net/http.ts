@@ -100,9 +100,6 @@ export class HttpServer<DB extends NkvDatabase> {
   // . net server instance
   protected srv: Server;
 
-  // .
-  protected isPaused = false;
-
   // . default response http header
   protected readonly httpHeader = { 'Content-Type': 'text/json' };
 
@@ -137,21 +134,8 @@ export class HttpServer<DB extends NkvDatabase> {
     this.httpHandlers[path] = handler;
   }
 
-  // .
-  set pause(setPause: boolean) {
-    this.isPaused = setPause;
-  }
-
   // . Handle all requests from the web server
   protected async requestListener(req: IncomingMessage, res: ServerResponse): Promise<void> {
-    // .
-    if (this.isPaused) {
-      res.writeHead(503, this.httpHeader);
-      res.end(JSON.stringify({ paused: true }));
-
-      return;
-    }
-
     // .
     const urlParse = url.parse(String(req?.url), true);
     const path = urlParse?.pathname || '/';
