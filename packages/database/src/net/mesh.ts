@@ -33,8 +33,18 @@ export class Mesh {
   }
 
   // .
+  // no exceptions no waiting
   async replicate(path: string, params: IncomeParams): Promise<void> {
-    // @todo
+    if (params.noReplicate) {
+      return;
+    }
+
+    this.nodes.filter(n => !n.isDown).forEach(n => {
+      this.request(`http://${n.host}:${n.port}${path}`, params as { [key: string]: string })
+        .catch(() => {
+          /* do nothing */
+        });
+    });
   }
 
   // .
@@ -95,13 +105,15 @@ export class Mesh {
 
     // Ping all urls in parallel (except current node)
     pingUrls.filter(n => n !== this.currentNode).forEach(node => {
-      const isUrl = typeof node === 'string';
-      const url = isUrl ? node : `http://${node.host}:${node.port}`;
+      const url = typeof node === 'string' ? node : `http://${node.host}:${node.port}`;
       this.request<{ nodes: MeshNode[] }>(`${url}/ping`, { nodes: this.serialize(workingNodes) })
         // Join all nodes from the response
         .then(rs => rs?.nodes?.forEach(node => this.join(node, 'ping')))
+        // Mark the node which is down
         .catch(e => {
-          // console.log('ERRRR', e.message);
+          if (e.code === 'ECONNREFUSED' && typeof node !== 'string') {
+            node.isDown = true;
+          }
         });
     });
   }
